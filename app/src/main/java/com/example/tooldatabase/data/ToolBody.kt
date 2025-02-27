@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 data class ToolBody(
     @PrimaryKey
     var id: Int? = null,
-    var ordcode: String
+    var ORDCODE: String,
+    var nmlDiameter: Int,
+    var ZEFP: Int
 )

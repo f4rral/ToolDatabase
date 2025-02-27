@@ -34,16 +34,16 @@ import com.example.tooldatabase.ui.theme.ToolDatabaseTheme
 class ToolBody {
     companion object {
         val toolBodyListFake = listOf(
-            ToolBody(id = 0, ordcode = "MT100-012W16R01RD08"),
-            ToolBody(id = 1, ordcode = "MT100-012W16R01RD08"),
-            ToolBody(id = 2, ordcode = "MT100-012W16R01RD08")
+            ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1),
+            ToolBody(id = 1, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1),
+            ToolBody(id = 2, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1)
         )
     }
 }
 
 @Composable
 fun ToolBodyItem(
-    item: ToolBody = ToolBody(id = 0, ordcode = "MT100-012W16R01RD08"),
+    item: ToolBody = ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1),
     onClick: ((id: Int) -> Unit)? = null
 ) {
     Card(
@@ -79,7 +79,7 @@ fun ToolBodyItem(
 
             ) {
                 Text(
-                    text = item.ordcode,
+                    text = item.ORDCODE,
                     fontSize = 16.sp,
                     fontWeight = FontWeight(600),
                     lineHeight = 19.sp,
@@ -87,13 +87,35 @@ fun ToolBodyItem(
                     modifier = Modifier
                         .padding(bottom = 8.dp)
                 )
-                Text(
-                    text = item.id.toString(),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(400),
-                    lineHeight = 17.sp,
-                    color = ThemeColor.gray5
-                )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "id: ${item.id.toString()}",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(400),
+                        lineHeight = 17.sp,
+                        color = ThemeColor.gray5
+                    )
+
+                    Text(
+                        text = "D: ${item.nmlDiameter.toString()}",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(400),
+                        lineHeight = 17.sp,
+                        color = ThemeColor.gray5
+                    )
+
+                    Text(
+                        text = "z: ${item.ZEFP.toString()}",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(400),
+                        lineHeight = 17.sp,
+                        color = ThemeColor.gray5
+                    )
+                }
+
             }
         }
     }
@@ -121,7 +143,7 @@ fun ToolBodyDetail(
         )
 
         Text(
-            text = item.ordcode,
+            text = item.ORDCODE,
             fontSize = 16.sp,
             fontWeight = FontWeight(600),
             color = ThemeColor.gray7,
