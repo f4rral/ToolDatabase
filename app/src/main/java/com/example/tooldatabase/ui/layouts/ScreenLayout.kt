@@ -1,4 +1,4 @@
-package com.example.contactsdb.ui.screens.layouts
+package com.example.tooldatabase.ui.layouts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

@@ -8,4 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface ToolBodyDao {
     @Query("SELECT * FROM tool_body ORDER BY id ASC")
     fun getAll(): Flow<List<ToolBody>>
+
+    @Query("SELECT * FROM tool_body WHERE nmlDiameter > :nmlDiameter AND ZEFP=5")
+    fun getToolBodyByTest(nmlDiameter: Int): Flow<List<ToolBody>>
 }

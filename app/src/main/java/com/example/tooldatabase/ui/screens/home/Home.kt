@@ -1,5 +1,6 @@
-package com.example.contactsdb.ui.screens.home
+package com.example.tooldatabase.ui.screens.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,26 +11,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.contactsdb.navigation.NavigationRoute
-import com.example.contactsdb.ui.contact.ToolBodyList
-import com.example.contactsdb.ui.screens.layouts.ScreenLayout
-import com.example.tooldatabase.ToolDatabaseApplication
+import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
+import com.example.tooldatabase.ui.layouts.ScreenLayout
 import com.example.tooldatabase.data.ToolBody
 import com.example.tooldatabase.viewmodels.ToolBodyListVM
 import com.example.tooldatabase.viewmodels.ToolBodyListVMFactory
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun HomeScreen() {
     val vmToolBodyList: ToolBodyListVM = viewModel(
         factory = ToolBodyListVMFactory()
     )
-    val contactList = vmToolBodyList.contactList.collectAsState(initial = emptyList()).value
+    val toolBodyList = vmToolBodyList.toolBodyList.collectAsState()
 
     ScreenLayout(
         title = "Home",
     ) {
         HomeBody(
-            toolBodyList = contactList,
+            toolBodyList = toolBodyList.value,
         )
     }
 }
@@ -56,7 +56,7 @@ fun HomeBody(
 fun HomeScreenPreview() {
     ScreenLayout {
         HomeBody(
-            toolBodyList = com.example.contactsdb.ui.contact.ToolBody.toolBodyListFake,
+            toolBodyList = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake,
         )
     }
 }

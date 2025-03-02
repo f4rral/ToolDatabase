@@ -1,4 +1,4 @@
-package com.example.contactsdb.ui.contact
+package com.example.tooldatabase.ui.components.tool_body
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -162,7 +162,7 @@ fun ToolBodyDetail(
 
 @Composable
 fun ToolBodyList(
-    toolBodyList: List<ToolBody> = com.example.contactsdb.ui.contact.ToolBody.toolBodyListFake,
+    toolBodyList: List<ToolBody> = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake,
     onClickItem: ((id: Int) -> Unit)? = null
 ) {
     LazyColumn(
@@ -183,7 +183,7 @@ fun ToolBodyList(
 private fun ToolBodyPreview() {
     ToolDatabaseTheme {
         ToolBodyList(
-            toolBodyList = com.example.contactsdb.ui.contact.ToolBody.toolBodyListFake
+            toolBodyList = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake
         )
     }
 }
@@ -192,7 +192,7 @@ private fun ToolBodyPreview() {
 @Composable
 private fun ToolBodyItemPreview() {
     ToolDatabaseTheme {
-        ToolBodyItem(item = com.example.contactsdb.ui.contact.ToolBody.toolBodyListFake[0])
+        ToolBodyItem(item = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake[0])
     }
 }
 
@@ -200,6 +200,6 @@ private fun ToolBodyItemPreview() {
 @Composable
 private fun ContactDetailPreview() {
     ToolDatabaseTheme {
-        ToolBodyDetail(item = com.example.contactsdb.ui.contact.ToolBody.toolBodyListFake[0])
+        ToolBodyDetail(item = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake[0])
     }
 }
