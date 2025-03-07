@@ -11,7 +11,7 @@ interface ToolBodyDao {
     fun getAll(): Flow<List<ToolBody>>
 
     @Query("SELECT * FROM tool_body WHERE nmlDiameter = :nmlDiameter")
-    fun getToolBodyByTest(nmlDiameter: Int?): Flow<List<ToolBody>>
+    fun getToolBodyByDiameter(nmlDiameter: Int?): Flow<List<ToolBody>>
 
     @Update
     suspend fun update(item: ToolBody)

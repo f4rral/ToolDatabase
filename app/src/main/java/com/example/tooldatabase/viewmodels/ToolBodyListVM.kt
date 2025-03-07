@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
-import com.example.tooldatabase.data.ToolBodyDao
-import com.example.tooldatabase.data.ToolDatabase
+import com.example.tooldatabase.data.ToolBodyRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,13 +17,13 @@ import kotlinx.coroutines.flow.update
 import kotlin.reflect.KClass
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ToolBodyListVM(var toolBodyDao: ToolBodyDao) : ViewModel() {
+class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     private val _stateFilterFlow = MutableStateFlow<Filter>(Filter())
     var stateFilterFlow = _stateFilterFlow.asStateFlow()
 
     private val _items = _stateFilterFlow
         .flatMapLatest { filter ->
-            toolBodyDao.getToolBodyByTest(filter.nmlDiameter)
+            repository.getToolBodyByDiameter(filter.nmlDiameter)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
@@ -42,8 +41,8 @@ class ToolBodyListVMFactory() : ViewModelProvider.Factory {
         modelClass: KClass<T>,
         extras: CreationExtras
     ): T {
-        val database: ToolDatabase = (extras[APPLICATION_KEY] as ToolDatabaseApplication).database
-        return ToolBodyListVM(toolBodyDao = database.toolBodyDao) as T
+        val repository: ToolBodyRepository = (extras[APPLICATION_KEY] as ToolDatabaseApplication).toolBodyRepository
+        return ToolBodyListVM(repository = repository) as T
     }
 }
 
