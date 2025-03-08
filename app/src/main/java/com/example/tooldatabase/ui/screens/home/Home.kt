@@ -53,9 +53,9 @@ fun HomeScreen() {
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(nmlDiameter = 80)
-                    )
+//                    vmToolBodyList.updateFilter(
+//                        filter = stateFilter.value.copy(nmlDiameter = 80)
+//                    )
                 }
             ) {
                 Text(

@@ -23,7 +23,8 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     private val _items = _stateFilterFlow
         .flatMapLatest { filter ->
-            repository.getToolBodyByDiameter(filter.nmlDiameter)
+//            repository.getToolBodyByDiameter(filter.nmlDiameter)
+            repository.filterQuery(filter)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
@@ -34,6 +35,9 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
             filter
         }
     }
+
+    fun update() {}
+
 }
 
 class ToolBodyListVMFactory() : ViewModelProvider.Factory {
