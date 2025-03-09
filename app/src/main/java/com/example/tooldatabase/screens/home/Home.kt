@@ -30,6 +30,8 @@ import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
 import com.example.tooldatabase.data.ToolBody
 import com.example.tooldatabase.ui.elements.ButtonText
+import com.example.tooldatabase.ui.elements.Spinner
+import com.example.tooldatabase.ui.elements.SpinnerOption
 import com.example.tooldatabase.viewmodels.ToolBodyListVM
 import com.example.tooldatabase.viewmodels.ToolBodyListVMFactory
 
@@ -58,63 +60,50 @@ fun HomeScreen() {
                 .padding(start = 8.dp, end = 8.dp)
                 .fillMaxSize()
         ) {
-            Slider(
-                value = sliderPosition.floatValue,
-                valueRange = 8f..1000f,
-                onValueChange = { sliderPosition.floatValue = it }
-            )
+//            Slider(
+//                value = sliderPosition.floatValue,
+//                valueRange = 8f..1000f,
+//                onValueChange = { sliderPosition.floatValue = it }
+//            )
+//
+//            Slider(
+//                value = sliderPosition.floatValue,
+//                onValueChange = { sliderPosition.floatValue = it },
+//                steps = 10,
+//                valueRange = 8f..1000f
+//            )
+//
+//            Slider(
+//                value = sliderPosition.floatValue,
+//                onValueChange = { sliderPosition.floatValue = it },
+//                steps = 10,
+//                valueRange = 8f..1000f
+//            )
+//
+//            Text(text = sliderPosition.floatValue.toString())
 
-            Slider(
-                value = sliderPosition.floatValue,
-                onValueChange = { sliderPosition.floatValue = it },
-                steps = 10,
-                valueRange = 8f..1000f
-            )
-
-            Slider(
-                value = sliderPosition.floatValue,
-                onValueChange = { sliderPosition.floatValue = it },
-                steps = 10,
-                valueRange = 8f..1000f
-            )
-
-            Text(text = sliderPosition.floatValue.toString())
-
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                OutlinedTextField(
-                    value = selectedText,
-                    onValueChange = {},
-                    readOnly = true,
-                    modifier = Modifier.menuAnchor().fillMaxWidth(),
-                    label = { Text(text = "Номинальный диаметр, мм") }
-                )
-
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    options.forEach { option ->
-                        val optionText = option?.toString() ?: "Пусто"
-
-                        DropdownMenuItem(
-                            text = { Text(text = optionText) },
-                            onClick = {
-                                selectedText = option?.toString() ?: ""
-                                 expanded = false
-
-                                vmToolBodyList.updateFilter(
-                                    filter = stateFilter.value.copy(nmlDiameter = option)
-                                )
-                            },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                        )
-                    }
+            Spinner(
+                label = "Номинальный диаметр",
+                options = listOf(
+                    SpinnerOption("Пусто", null),
+                    SpinnerOption("8 мм", 8),
+                    SpinnerOption("12 мм", 12),
+                    SpinnerOption("16 мм", 16),
+                    SpinnerOption("25 мм", 25),
+                    SpinnerOption("32 мм", 32),
+                    SpinnerOption("40 мм", 40),
+                    SpinnerOption("50 мм", 50),
+                    SpinnerOption("63 мм", 63),
+                    SpinnerOption("80 мм", 80),
+                    SpinnerOption("100 мм", 100),
+                    SpinnerOption("125 мм", 125),
+                ),
+                onClickItem = { value: Int? ->
+                    vmToolBodyList.updateFilter(
+                        filter = stateFilter.value.copy(nmlDiameter = value)
+                    )
                 }
-            }
+            )
 
             OutlinedTextField(
                 label = { Text(text = "Номинальный диаметр, мм")},
