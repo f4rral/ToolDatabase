@@ -47,7 +47,7 @@ fun HomeScreen() {
 
     val options = listOf(null, 8, 12, 16, 25, 32, 40, 50, 63, 80, 100, 125, 160)
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf("") }
+    var selectedText by remember { mutableStateOf("") }
 
     ScreenLayout(
         title = "Home",
@@ -85,12 +85,12 @@ fun HomeScreen() {
                 onExpandedChange = { expanded = !expanded },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                TextField(
-                    value = selectedOptionText,
+                OutlinedTextField(
+                    value = selectedText,
                     onValueChange = {},
                     readOnly = true,
                     modifier = Modifier.menuAnchor().fillMaxWidth(),
-                    label = { Text(text = "label") }
+                    label = { Text(text = "Номинальный диаметр, мм") }
                 )
 
                 ExposedDropdownMenu(
@@ -98,11 +98,13 @@ fun HomeScreen() {
                     onDismissRequest = { expanded = false }
                 ) {
                     options.forEach { option ->
+                        val optionText = option?.toString() ?: "Пусто"
+
                         DropdownMenuItem(
-                            text = { Text(text = option.toString()) },
+                            text = { Text(text = optionText) },
                             onClick = {
-                                selectedOptionText = option.toString()
-                                expanded = false
+                                selectedText = option?.toString() ?: ""
+                                 expanded = false
 
                                 vmToolBodyList.updateFilter(
                                     filter = stateFilter.value.copy(nmlDiameter = option)
