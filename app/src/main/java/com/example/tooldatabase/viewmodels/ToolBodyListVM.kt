@@ -37,7 +37,6 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     }
 
     fun update() {}
-
 }
 
 class ToolBodyListVMFactory() : ViewModelProvider.Factory {

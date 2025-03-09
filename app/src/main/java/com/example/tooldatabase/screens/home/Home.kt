@@ -1,10 +1,9 @@
-package com.example.tooldatabase.ui.screens.home
+package com.example.tooldatabase.screens.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -17,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
 import com.example.tooldatabase.data.ToolBody
-import com.example.tooldatabase.ui.ButtonText
+import com.example.tooldatabase.ui.elements.ButtonText
 import com.example.tooldatabase.viewmodels.ToolBodyListVM
 import com.example.tooldatabase.viewmodels.ToolBodyListVMFactory
 
