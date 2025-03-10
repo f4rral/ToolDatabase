@@ -1,15 +1,18 @@
 package com.example.tooldatabase.ui.elements
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSizeIn
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,13 +20,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 
 data class SpinnerOption<T>(
     val title: String,
-    val value: T
+    val value: T,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,12 +42,13 @@ fun <T> Spinner(
     options: List<SpinnerOption<T>>,
     onClickItem: ((value: T?) -> Unit)? = null
 ) {
+    val focusManager = LocalFocusManager.current
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = {},
         modifier = Modifier.fillMaxWidth()
     ) {
         OutlinedTextField(
@@ -50,18 +60,23 @@ fun <T> Spinner(
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
-            ,
+                .onFocusChanged {
+                    expanded = it.isFocused
+                },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             label = {
                 Text(
                     text = label,
                 )
-            }
+            },
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
+            onDismissRequest = {
+                expanded = false
+                focusManager.clearFocus()
+            },
             modifier = Modifier.requiredSizeIn(maxHeight = 328.dp),
         ) {
             options.forEach { option ->
@@ -84,6 +99,8 @@ fun <T> Spinner(
                         if (onClickItem != null) {
                             onClickItem(option.value)
                         }
+
+                        focusManager.clearFocus()
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )

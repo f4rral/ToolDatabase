@@ -35,7 +35,7 @@ import com.example.tooldatabase.ui.elements.SpinnerOption
 import com.example.tooldatabase.viewmodels.ToolBodyListVM
 import com.example.tooldatabase.viewmodels.ToolBodyListVMFactory
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun HomeScreen() {
@@ -46,10 +46,6 @@ fun HomeScreen() {
     val items = vmToolBodyList.items.collectAsState()
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
     var sliderPosition = mutableFloatStateOf(0f)
-
-    val options = listOf(null, 8, 12, 16, 25, 32, 40, 50, 63, 80, 100, 125, 160)
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf("") }
 
     ScreenLayout(
         title = "Home",
@@ -85,7 +81,7 @@ fun HomeScreen() {
             Spinner(
                 label = "Номинальный диаметр",
                 options = listOf(
-                    SpinnerOption("Пусто", null),
+                    SpinnerOption("Любой", null),
                     SpinnerOption("8 мм", 8),
                     SpinnerOption("12 мм", 12),
                     SpinnerOption("16 мм", 16),
@@ -93,10 +89,14 @@ fun HomeScreen() {
                     SpinnerOption("32 мм", 32),
                     SpinnerOption("40 мм", 40),
                     SpinnerOption("50 мм", 50),
+//                    SpinnerOption("50.8 мм", 50.8),
                     SpinnerOption("63 мм", 63),
                     SpinnerOption("80 мм", 80),
                     SpinnerOption("100 мм", 100),
                     SpinnerOption("125 мм", 125),
+                    SpinnerOption("160 мм", 160),
+                    SpinnerOption("200 мм", 200),
+                    SpinnerOption("315 мм", 315),
                 ),
                 onClickItem = { value: Int? ->
                     vmToolBodyList.updateFilter(
@@ -163,48 +163,4 @@ fun HomeScreenPreview() {
             toolBodyList = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake,
         )
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Select() {
-    val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf("") }
-
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        TextField(
-            value = selectedOptionText,
-            onValueChange = {},
-            readOnly = true,
-            modifier = Modifier.menuAnchor().fillMaxWidth(),
-            label = { Text(text = "label") }
-        )
-
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = { Text(text = option) },
-                    onClick = {
-                        selectedOptionText = option
-                        expanded = false
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun SelectPreview() {
-    Select()
 }
