@@ -20,15 +20,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
+import com.example.tooldatabase.ui.theme.ThemeColor
 
 data class SpinnerOption<T>(
     val title: String,
@@ -46,6 +43,10 @@ fun <T> Spinner(
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
+    val colors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = ThemeColor.violet3
+    )
+
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = {},
@@ -56,6 +57,13 @@ fun <T> Spinner(
             onValueChange = {},
             readOnly = true,
             singleLine = true,
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = colors,
+            label = {
+                Text(
+                    text = label,
+                )
+            },
             modifier = Modifier
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                 .fillMaxWidth()
@@ -63,12 +71,6 @@ fun <T> Spinner(
                 .onFocusChanged {
                     expanded = it.isFocused
                 },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            label = {
-                Text(
-                    text = label,
-                )
-            },
         )
 
         ExposedDropdownMenu(

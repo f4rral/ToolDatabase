@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -77,6 +78,15 @@ fun HomeScreen() {
 //            )
 //
 //            Text(text = sliderPosition.floatValue.toString())
+
+            OutlinedTextField(
+                label = { Text(text = "Номинальный диаметр, мм")},
+                modifier = Modifier.fillMaxWidth(),
+                value = "",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onValueChange = { },
+                colors = OutlinedTextFieldDefaults.colors()
+            )
 
             Spinner(
                 label = "Номинальный диаметр",

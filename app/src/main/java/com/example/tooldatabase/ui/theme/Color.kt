@@ -1,5 +1,6 @@
 package com.example.tooldatabase.ui.theme
 
+import androidx.compose.material3.ButtonColors
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -23,4 +24,11 @@ object ThemeColor {
     val violet2 = Color(0xFFE9E1FF)
     val violet3 = Color(0xFF7949FF)
     val yellow = Color(0xFFF5BE2E)
+
+    val buttonColors: ButtonColors = ButtonColors(
+        contentColor = gray2,
+        containerColor = violet3,
+        disabledContentColor = gray4,
+        disabledContainerColor = gray5
+    )
 }
