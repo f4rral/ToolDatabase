@@ -79,15 +79,6 @@ fun HomeScreen() {
 //
 //            Text(text = sliderPosition.floatValue.toString())
 
-            OutlinedTextField(
-                label = { Text(text = "Номинальный диаметр, мм")},
-                modifier = Modifier.fillMaxWidth(),
-                value = "",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { },
-                colors = OutlinedTextFieldDefaults.colors()
-            )
-
             Spinner(
                 label = "Номинальный диаметр",
                 options = listOf(

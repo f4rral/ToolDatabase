@@ -43,10 +43,6 @@ fun <T> Spinner(
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
-    val colors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = ThemeColor.violet3
-    )
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = {},
@@ -58,7 +54,6 @@ fun <T> Spinner(
             readOnly = true,
             singleLine = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = colors,
             label = {
                 Text(
                     text = label,

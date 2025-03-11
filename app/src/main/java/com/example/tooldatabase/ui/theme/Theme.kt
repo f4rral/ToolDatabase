@@ -1,6 +1,5 @@
 package com.example.tooldatabase.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -18,9 +17,9 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = ThemeColor.violet3,
+    secondary = ThemeColor.green1,
+    tertiary = ThemeColor.yellow1
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -51,7 +50,7 @@ fun ToolDatabaseTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme,
         typography = Typography,
         content = content
     )
