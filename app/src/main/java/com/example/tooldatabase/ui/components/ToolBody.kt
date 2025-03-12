@@ -34,16 +34,16 @@ import com.example.tooldatabase.ui.theme.ToolDatabaseTheme
 class ToolBody {
     companion object {
         val toolBodyListFake = listOf(
-            ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1),
-            ToolBody(id = 1, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1),
-            ToolBody(id = 2, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1)
+            ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1, series = "MT1", KAPR = 0.0),
+            ToolBody(id = 1, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1, series = "MT1", KAPR = 0.0),
+            ToolBody(id = 2, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1, series = "MT1", KAPR = 0.0)
         )
     }
 }
 
 @Composable
 fun ToolBodyItem(
-    item: ToolBody = ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12, ZEFP = 1),
+    item: ToolBody = ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1),
     onClick: ((id: Int) -> Unit)? = null
 ) {
     Card(
@@ -109,6 +109,22 @@ fun ToolBodyItem(
 
                     Text(
                         text = "z: ${item.ZEFP.toString()}",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(400),
+                        lineHeight = 17.sp,
+                        color = ThemeColor.gray5
+                    )
+
+                    Text(
+                        text = "s: ${item.series}",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(400),
+                        lineHeight = 17.sp,
+                        color = ThemeColor.gray5
+                    )
+
+                    Text(
+                        text = "k: ${item.KAPR}",
                         fontSize = 14.sp,
                         fontWeight = FontWeight(400),
                         lineHeight = 17.sp,
