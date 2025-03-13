@@ -6,22 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,7 +35,7 @@ fun HomeScreen() {
 
     val items = vmToolBodyList.items.collectAsState()
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
-    var sliderPosition = mutableFloatStateOf(0f)
+    val nmlDiameterList = vmToolBodyList.listNmlDiameter.collectAsState()
 
     ScreenLayout(
         title = "Home",
@@ -81,25 +70,26 @@ fun HomeScreen() {
 
             Spinner(
                 label = "Номинальный диаметр",
-                options = listOf(
-                    SpinnerOption("Любой", null),
-                    SpinnerOption("8 мм", 8),
-                    SpinnerOption("12 мм", 12),
-                    SpinnerOption("16 мм", 16),
-                    SpinnerOption("25 мм", 25),
-                    SpinnerOption("32 мм", 32),
-                    SpinnerOption("40 мм", 40),
-                    SpinnerOption("50 мм", 50),
+//                options = listOf(
+//                    SpinnerOption("Любой", null),
+//                    SpinnerOption("8 мм", 8.0),
+//                    SpinnerOption("12 мм", 12.0),
+//                    SpinnerOption("16 мм", 16.0),
+//                    SpinnerOption("25 мм", 25.0),
+//                    SpinnerOption("32 мм", 32.0),
+//                    SpinnerOption("40 мм", 40.0),
+//                    SpinnerOption("50 мм", 50.0),
 //                    SpinnerOption("50.8 мм", 50.8),
-                    SpinnerOption("63 мм", 63),
-                    SpinnerOption("80 мм", 80),
-                    SpinnerOption("100 мм", 100),
-                    SpinnerOption("125 мм", 125),
-                    SpinnerOption("160 мм", 160),
-                    SpinnerOption("200 мм", 200),
-                    SpinnerOption("315 мм", 315),
-                ),
-                onClickItem = { value: Int? ->
+//                    SpinnerOption("63 мм", 63.0),
+//                    SpinnerOption("80 мм", 80.0),
+//                    SpinnerOption("100 мм", 100.0),
+//                    SpinnerOption("125 мм", 125.0),
+//                    SpinnerOption("160 мм", 160.0),
+//                    SpinnerOption("200 мм", 200.0),
+//                    SpinnerOption("315 мм", 315.0),
+//                ),
+                options = nmlDiameterList.value,
+                onClickItem = { value ->
                     vmToolBodyList.updateFilter(
                         filter = stateFilter.value.copy(nmlDiameter = value)
                     )
@@ -113,7 +103,7 @@ fun HomeScreen() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = {
                     println("onValueChange $it")
-                    val value = if (it.toIntOrNull() != null) it.toInt()  else null
+                    val value = if (it.toDoubleOrNull() != null) it.toDouble()  else null
 
                     vmToolBodyList.updateFilter(
                         filter = stateFilter.value.copy(nmlDiameter = value)
@@ -128,7 +118,7 @@ fun HomeScreen() {
                 text = "Update",
                 onClick = {
                     vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(nmlDiameter = 80)
+                        filter = stateFilter.value.copy(nmlDiameter = 80.0)
                     )
                 }
             )

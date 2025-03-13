@@ -15,15 +15,22 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         } else {
             toolBodyDao.getAll()
         }
-
     }
+
+//    suspend fun getUniqueNmlDiameter(): List<Double> {
+//        return toolBodyDao.nmlDiameterUnique()
+//    }
+
+//    fun getUniqueNmlDiameterFlow(): Flow<List<Double>> {
+//        return toolBodyDao.nmlDiameterUniqueFlow()
+//    }
 
     suspend fun update(toolBody: ToolBody) {
         toolBodyDao.update(toolBody)
     }
 
     suspend fun filterQuery(filter: Filter): Flow<List<ToolBody>> {
-        val nmlDiameter: Int? = filter.nmlDiameter
+        val nmlDiameter: Double? = filter.nmlDiameter
         val argumentsArr = mutableListOf<String>()
         var str = ""
 
