@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [ToolBody::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 abstract class ToolDatabase : RoomDatabase() {

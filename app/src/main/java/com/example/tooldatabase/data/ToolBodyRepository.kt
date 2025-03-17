@@ -2,34 +2,17 @@ package com.example.tooldatabase.data
 
 import androidx.room.RoomRawQuery
 import com.example.tooldatabase.viewmodels.Filter
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapLatest
+
 
 class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
-    fun getAll(): Flow<List<ToolBody>> {
-        return toolBodyDao.getAll()
+    suspend fun updateToolBody(toolBody: ToolBody) {
+        toolBodyDao.updateToolBody(toolBody)
     }
 
-    fun getToolBodyByDiameter(nmlDiameter: Int?): Flow<List<ToolBody>> {
-        return if (nmlDiameter != null) {
-            toolBodyDao.getToolBodyByDiameter(nmlDiameter)
-        } else {
-            toolBodyDao.getAll()
-        }
-    }
-
-//    suspend fun getUniqueNmlDiameter(): List<Double> {
-//        return toolBodyDao.nmlDiameterUnique()
-//    }
-
-//    fun getUniqueNmlDiameterFlow(): Flow<List<Double>> {
-//        return toolBodyDao.nmlDiameterUniqueFlow()
-//    }
-
-    suspend fun update(toolBody: ToolBody) {
-        toolBodyDao.update(toolBody)
-    }
-
-    suspend fun filterQuery(filter: Filter): Flow<List<ToolBody>> {
+    fun filterQuery(filter: Filter): Flow<List<ToolBody>> {
         val nmlDiameter: Double? = filter.nmlDiameter
         val argumentsArr = mutableListOf<String>()
         var str = ""
@@ -50,4 +33,16 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 
         return toolBodyDao.rawQuery(query)
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getAvailableFilters(): Flow<AvailableFilters> {
+        val flowAF: Flow<AvailableFilters> = toolBodyDao.getAllNmlDiameter()
+            .mapLatest { AvailableFilters(it) }
+
+        return flowAF
+    }
 }
+
+data class AvailableFilters(
+    val allNmlDiameter: List<Double>,
+)

@@ -15,14 +15,11 @@ interface ToolBodyDao {
     @Query("SELECT * FROM tool_body WHERE nmlDiameter = :nmlDiameter")
     fun getToolBodyByDiameter(nmlDiameter: Int?): Flow<List<ToolBody>>
 
-//    @Query("SELECT DISTINCT nmlDiameter FROM tool_body")
-//    suspend fun nmlDiameterUnique(): List<Double>
-//
-//    @Query("SELECT DISTINCT nmlDiameter FROM tool_body")
-//    fun nmlDiameterUniqueFlow(): Flow<List<Double>>
+    @Query("SELECT DISTINCT nmlDiameter FROM tool_body ORDER BY nmlDiameter ASC")
+    fun getAllNmlDiameter(): Flow<List<Double>>
 
     @Update
-    suspend fun update(item: ToolBody)
+    suspend fun updateToolBody(item: ToolBody)
 
     @RawQuery(observedEntities = [ToolBody::class])
     fun rawQuery(query: RoomRawQuery): Flow<List<ToolBody>>
