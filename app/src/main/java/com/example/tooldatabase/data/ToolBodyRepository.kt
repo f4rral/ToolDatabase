@@ -7,13 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 
-
 class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
     suspend fun updateToolBody(toolBody: ToolBody) {
         toolBodyDao.updateToolBody(toolBody)
     }
 
-    fun filterQuery(filter: Filter): Flow<List<ToolBody>> {
+    fun getToolBodyList(filter: Filter): Flow<List<ToolBody>> {
         val nmlDiameter: Double? = filter.nmlDiameter
         val ZEFP: Int? = filter.ZEFP
         val argumentsArr = mutableListOf<String>()
@@ -39,26 +38,30 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             sql = "SELECT * FROM tool_body $str",
         )
 
-        return toolBodyDao.rawQuery(query)
+        return toolBodyDao.getToolBodyList(query)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    fun rawQuery(): Flow<List<Int>> {
+        val flow: Flow<List<Int>> = toolBodyDao.rawQuery(RoomRawQuery(sql = """ 
+            SELECT DISTINCT ZEFP FROM tool_body 
+            WHERE nmlDiameter = 50 AND series = "MT2"
+            ORDER BY ZEFP ASC
+        """))
+            .mapLatest { it }
+
+        return flow
+    }
+
     fun getAvailableFilters(): Flow<AvailableFilters> {
-        val flowAF: Flow<AvailableFilters> = toolBodyDao.getAllNmlDiameter()
-            .mapLatest { AvailableFilters(it) }
-
-        return flowAF
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun getAvailableFilters2(): Flow<AvailableFilters> {
         return combine(
             toolBodyDao.getAllNmlDiameter(),
-            toolBodyDao.getAllZEFP()
-        ) { allNmlDiameter, allZEFP ->
+            toolBodyDao.getAllZEFP(),
+            rawQuery()
+        ) { allNmlDiameter, allZEFP, availableZEFP ->
             AvailableFilters(
                 allNmlDiameter = allNmlDiameter,
-                allZEFP = allZEFP
+                allZEFP = allZEFP,
+                availableZEFP = availableZEFP
             )
         }
     }
@@ -66,5 +69,6 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 
 data class AvailableFilters(
     val allNmlDiameter: List<Double> = listOf(),
-    val allZEFP: List<Int> = listOf()
+    val allZEFP: List<Int> = listOf(),
+    val availableZEFP: List<Int> = listOf()
 )

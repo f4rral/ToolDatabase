@@ -21,9 +21,19 @@ interface ToolBodyDao {
     @Query("SELECT DISTINCT ZEFP FROM tool_body ORDER BY ZEFP ASC")
     fun getAllZEFP(): Flow<List<Int>>
 
+    @Query("""
+        SELECT DISTINCT ZEFP FROM tool_body 
+        WHERE nmlDiameter = 50 AND series = "MT1"
+        ORDER BY ZEFP ASC
+    """)
+    fun getAvailableZEFP(): Flow<List<Int>>
+
     @Update
     suspend fun updateToolBody(item: ToolBody)
 
     @RawQuery(observedEntities = [ToolBody::class])
-    fun rawQuery(query: RoomRawQuery): Flow<List<ToolBody>>
+    fun getToolBodyList(query: RoomRawQuery): Flow<List<ToolBody>>
+
+    @RawQuery(observedEntities = [ToolBody::class])
+    fun rawQuery(query: RoomRawQuery): Flow<List<Int>>
 }

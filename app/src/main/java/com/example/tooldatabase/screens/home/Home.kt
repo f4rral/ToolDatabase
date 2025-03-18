@@ -38,6 +38,7 @@ fun HomeScreen() {
 
     println("availableFilters ${stateAvailableFilters.value.allNmlDiameter}")
     println("availableFilters ${stateAvailableFilters.value.allZEFP}")
+    println("availableFilters ${stateAvailableFilters.value.availableZEFP}")
 
     ScreenLayout(
         title = "Home",

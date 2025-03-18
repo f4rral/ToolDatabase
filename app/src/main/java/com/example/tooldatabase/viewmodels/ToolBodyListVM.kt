@@ -24,12 +24,12 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     private val _items = _stateFilterFlow
         .flatMapLatest { filter ->
-            repository.filterQuery(filter)
+            repository.getToolBodyList(filter)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
 
-    val availableFilters = repository.getAvailableFilters2()
+    val availableFilters = repository.getAvailableFilters()
         .stateIn(
             scope = viewModelScope,
             started =  SharingStarted.WhileSubscribed(),
