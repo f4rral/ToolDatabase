@@ -29,7 +29,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
 
-    val availableFilters = repository.getAvailableFilters()
+    val availableFilters = repository.getAvailableFilters2()
         .stateIn(
             scope = viewModelScope,
             started =  SharingStarted.WhileSubscribed(),
@@ -61,7 +61,8 @@ class ToolBodyListVMFactory() : ViewModelProvider.Factory {
 }
 
 data class Filter(
-    var nmlDiameter: Double? = 125.0,
+    var nmlDiameter: Double? = null,
+    var ZEFP: Int? = null
 )
 
 data class Control(

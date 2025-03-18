@@ -37,6 +37,7 @@ fun HomeScreen() {
     val stateAvailableFilters = vmToolBodyList.availableFilters.collectAsState()
 
     println("availableFilters ${stateAvailableFilters.value.allNmlDiameter}")
+    println("availableFilters ${stateAvailableFilters.value.allZEFP}")
 
     ScreenLayout(
         title = "Home",
@@ -69,21 +70,34 @@ fun HomeScreen() {
 //
 //            Text(text = sliderPosition.floatValue.toString())
 
-            val arr: List<Double?> = listOf(null)
-
             Spinner(
                 label = "Номинальный диаметр",
-                options = (arr + stateAvailableFilters.value.allNmlDiameter).map {
+                options = (listOf(null) + stateAvailableFilters.value.allNmlDiameter).map {
                     if (it == null) {
                         SpinnerOption("Любой", null)
                     } else {
                         SpinnerOption("$it мм", it)
                     }
-
                 },
                 onClickItem = { value ->
                     vmToolBodyList.updateFilter(
                         filter = stateFilter.value.copy(nmlDiameter = value)
+                    )
+                }
+            )
+
+            Spinner(
+                label = "Кол-во зубьев",
+                options = (listOf(null) + stateAvailableFilters.value.allZEFP).map {
+                    if (it == null) {
+                        SpinnerOption("Любой", null)
+                    } else {
+                        SpinnerOption("$it", it)
+                    }
+                },
+                onClickItem = { value ->
+                    vmToolBodyList.updateFilter(
+                        filter = stateFilter.value.copy(ZEFP = value)
                     )
                 }
             )
@@ -132,9 +146,15 @@ fun HomeBody(
 //            .padding(start = 8.dp, end = 8.dp)
             .fillMaxSize()
     ) {
-        ToolBodyList(
-            toolBodyList = toolBodyList
-        )
+        if (toolBodyList.isNotEmpty()) {
+            ToolBodyList(
+                toolBodyList = toolBodyList
+            )
+        } else {
+            Text(
+                text = "Не найдено"
+            )
+        }
     }
 }
 

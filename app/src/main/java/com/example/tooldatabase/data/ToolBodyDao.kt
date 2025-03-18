@@ -18,6 +18,9 @@ interface ToolBodyDao {
     @Query("SELECT DISTINCT nmlDiameter FROM tool_body ORDER BY nmlDiameter ASC")
     fun getAllNmlDiameter(): Flow<List<Double>>
 
+    @Query("SELECT DISTINCT ZEFP FROM tool_body ORDER BY ZEFP ASC")
+    fun getAllZEFP(): Flow<List<Int>>
+
     @Update
     suspend fun updateToolBody(item: ToolBody)
 

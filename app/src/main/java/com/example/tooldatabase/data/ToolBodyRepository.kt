@@ -4,6 +4,7 @@ import androidx.room.RoomRawQuery
 import com.example.tooldatabase.viewmodels.Filter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 
 
@@ -14,12 +15,19 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 
     fun filterQuery(filter: Filter): Flow<List<ToolBody>> {
         val nmlDiameter: Double? = filter.nmlDiameter
+        val ZEFP: Int? = filter.ZEFP
         val argumentsArr = mutableListOf<String>()
         var str = ""
 
         if (nmlDiameter != null) {
             argumentsArr.add("nmlDiameter = $nmlDiameter")
         }
+
+        if (ZEFP != null) {
+            argumentsArr.add("ZEFP = $ZEFP")
+        }
+
+        println("ToolBodyRepository $argumentsArr")
 
         if (argumentsArr.isNotEmpty()) {
             str = "WHERE " +  argumentsArr.joinToString(" AND ")
@@ -41,8 +49,22 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 
         return flowAF
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getAvailableFilters2(): Flow<AvailableFilters> {
+        return combine(
+            toolBodyDao.getAllNmlDiameter(),
+            toolBodyDao.getAllZEFP()
+        ) { allNmlDiameter, allZEFP ->
+            AvailableFilters(
+                allNmlDiameter = allNmlDiameter,
+                allZEFP = allZEFP
+            )
+        }
+    }
 }
 
 data class AvailableFilters(
-    val allNmlDiameter: List<Double>,
+    val allNmlDiameter: List<Double> = listOf(),
+    val allZEFP: List<Int> = listOf()
 )
