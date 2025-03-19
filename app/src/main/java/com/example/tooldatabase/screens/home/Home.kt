@@ -36,9 +36,7 @@ fun HomeScreen() {
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
     val stateAvailableFilters = vmToolBodyList.availableFilters.collectAsState()
 
-    println("availableFilters ${stateAvailableFilters.value.allNmlDiameter}")
-    println("availableFilters ${stateAvailableFilters.value.allZEFP}")
-    println("availableFilters ${stateAvailableFilters.value.availableZEFP}")
+    println("availableFilters ${stateAvailableFilters.value.allSeries}")
 
     ScreenLayout(
         title = "Home",
@@ -70,6 +68,22 @@ fun HomeScreen() {
 //            )
 //
 //            Text(text = sliderPosition.floatValue.toString())
+
+            Spinner(
+                label = "Серия",
+                options = (listOf(null) + stateAvailableFilters.value.allSeries).map {
+                    if (it == null) {
+                        SpinnerOption("Любая", null)
+                    } else {
+                        SpinnerOption("$it", it)
+                    }
+                },
+                onClickItem = { value ->
+                    vmToolBodyList.updateFilter(
+                        filter = stateFilter.value.copy(series = value)
+                    )
+                }
+            )
 
             Spinner(
                 label = "Номинальный диаметр",
@@ -122,11 +136,11 @@ fun HomeScreen() {
                 modifier = Modifier
                     .padding(top = 16.dp, bottom = 16.dp)
                     .fillMaxWidth(),
-                text = "Update",
+                text = "Test",
                 onClick = {
-                    vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(nmlDiameter = 80.0)
-                    )
+//                    vmToolBodyList.updateFilter(
+//                        filter = stateFilter.value.copy(nmlDiameter = 80.0)
+//                    )
                 }
             )
 
@@ -134,7 +148,6 @@ fun HomeScreen() {
                 toolBodyList = items.value
             )
         }
-
     }
 }
 

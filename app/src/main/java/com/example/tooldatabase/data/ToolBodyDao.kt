@@ -12,14 +12,17 @@ interface ToolBodyDao {
     @Query("SELECT * FROM tool_body ORDER BY id ASC")
     fun getAll(): Flow<List<ToolBody>>
 
-    @Query("SELECT * FROM tool_body WHERE nmlDiameter = :nmlDiameter")
-    fun getToolBodyByDiameter(nmlDiameter: Int?): Flow<List<ToolBody>>
+//    @Query("SELECT * FROM tool_body WHERE nmlDiameter = :nmlDiameter")
+//    fun getToolBodyByDiameter(nmlDiameter: Int?): Flow<List<ToolBody>>
 
     @Query("SELECT DISTINCT nmlDiameter FROM tool_body ORDER BY nmlDiameter ASC")
     fun getAllNmlDiameter(): Flow<List<Double>>
 
     @Query("SELECT DISTINCT ZEFP FROM tool_body ORDER BY ZEFP ASC")
     fun getAllZEFP(): Flow<List<Int>>
+
+    @Query("SELECT DISTINCT series FROM tool_body ORDER BY series ASC")
+    fun getAllSeries(): Flow<List<String>>
 
     @Query("""
         SELECT DISTINCT ZEFP FROM tool_body 

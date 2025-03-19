@@ -62,7 +62,8 @@ class ToolBodyListVMFactory() : ViewModelProvider.Factory {
 
 data class Filter(
     var nmlDiameter: Double? = null,
-    var ZEFP: Int? = null
+    var ZEFP: Int? = null,
+    var series: String? = null
 )
 
 data class Control(

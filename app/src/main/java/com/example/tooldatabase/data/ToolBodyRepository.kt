@@ -15,15 +15,20 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
     fun getToolBodyList(filter: Filter): Flow<List<ToolBody>> {
         val nmlDiameter: Double? = filter.nmlDiameter
         val ZEFP: Int? = filter.ZEFP
+        val series: String? = filter.series
         val argumentsArr = mutableListOf<String>()
         var str = ""
 
         if (nmlDiameter != null) {
-            argumentsArr.add("nmlDiameter = $nmlDiameter")
+            argumentsArr.add("nmlDiameter = '$nmlDiameter'")
         }
 
         if (ZEFP != null) {
-            argumentsArr.add("ZEFP = $ZEFP")
+            argumentsArr.add("ZEFP = '$ZEFP'")
+        }
+
+        if (series != null) {
+            argumentsArr.add("series = '$series'")
         }
 
         println("ToolBodyRepository $argumentsArr")
@@ -56,11 +61,13 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         return combine(
             toolBodyDao.getAllNmlDiameter(),
             toolBodyDao.getAllZEFP(),
+            toolBodyDao.getAllSeries(),
             rawQuery()
-        ) { allNmlDiameter, allZEFP, availableZEFP ->
+        ) { allNmlDiameter, allZEFP, allSeries, availableZEFP ->
             AvailableFilters(
                 allNmlDiameter = allNmlDiameter,
                 allZEFP = allZEFP,
+                allSeries = allSeries,
                 availableZEFP = availableZEFP
             )
         }
@@ -70,5 +77,6 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 data class AvailableFilters(
     val allNmlDiameter: List<Double> = listOf(),
     val allZEFP: List<Int> = listOf(),
-    val availableZEFP: List<Int> = listOf()
+    val allSeries: List<String> = listOf(),
+    val availableZEFP: List<Int> = listOf(),
 )
