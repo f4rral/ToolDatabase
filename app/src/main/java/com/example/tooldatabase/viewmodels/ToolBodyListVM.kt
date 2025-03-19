@@ -29,13 +29,14 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
 
-    val availableFilters = repository.getAvailableFilters()
+    val availableFilters = _stateFilterFlow
+        .flatMapLatest { filter ->
+            repository.getAvailableFilters(filter)
+        }
         .stateIn(
             scope = viewModelScope,
             started =  SharingStarted.WhileSubscribed(),
-            initialValue = AvailableFilters(
-                allNmlDiameter = emptyList()
-            )
+            initialValue = AvailableFilters()
         )
 
     fun updateFilter(filter: Filter) {

@@ -36,7 +36,8 @@ fun HomeScreen() {
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
     val stateAvailableFilters = vmToolBodyList.availableFilters.collectAsState()
 
-    println("availableFilters ${stateAvailableFilters.value.allSeries}")
+    println("ToolDataBaseApp allSeries ${stateAvailableFilters.value.allSeries}")
+    println("ToolDataBaseApp availableZEFP ${stateAvailableFilters.value.availableZEFP}")
 
     ScreenLayout(
         title = "Home",
