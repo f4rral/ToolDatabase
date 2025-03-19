@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
 import com.example.tooldatabase.data.AvailableFilters
+import com.example.tooldatabase.data.Filter
 import com.example.tooldatabase.data.ToolBodyRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,20 +61,3 @@ class ToolBodyListVMFactory() : ViewModelProvider.Factory {
         return ToolBodyListVM(repository = repository) as T
     }
 }
-
-data class Filter(
-    var nmlDiameter: Double? = null,
-    var ZEFP: Int? = null,
-    var series: String? = null
-)
-
-data class Control(
-    var value: Int,
-    var min: Int,
-    var max: Int,
-)
-
-data class SpinnerControl<T>(
-    var value: String = "",
-    var listValues: List<T>
-)

@@ -1,7 +1,6 @@
 package com.example.tooldatabase.data
 
 import androidx.room.RoomRawQuery
-import com.example.tooldatabase.viewmodels.Filter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
@@ -107,4 +106,29 @@ data class AvailableFilters(
     val allZEFP: List<Int> = listOf(),
     val allSeries: List<String> = listOf(),
     val availableZEFP: List<Int> = listOf(),
+)
+
+data class Filter(
+    var nmlDiameter: Double? = null,
+    var ZEFP: Int? = null,
+    var series: String? = null
+)
+
+data class Filter2(
+    val nmlDiameter: ControlFilter2<Double> = ControlFilter2(
+        name = "nmlDiameter",
+        values = emptyList(),
+        currentValue = null
+    )
+)
+
+data class ControlFilter2<T>(
+    val name: String,
+    val values: List<ControlValue<T>> = emptyList(),
+    val currentValue: T? = null,
+)
+
+data class ControlValue<T>(
+    val value: T,
+    val isActive: Boolean = true
 )
