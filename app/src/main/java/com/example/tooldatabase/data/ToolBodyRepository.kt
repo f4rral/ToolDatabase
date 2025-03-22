@@ -1,6 +1,7 @@
 package com.example.tooldatabase.data
 
 import androidx.room.RoomRawQuery
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
@@ -29,8 +30,6 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             argumentsArr.add("series = '$series'")
         }
 
-        println("ToolDataBaseApp getToolBodyList $argumentsArr")
-
         if (argumentsArr.isNotEmpty()) {
             str = "WHERE " +  argumentsArr.joinToString(" AND ")
         }
@@ -42,6 +41,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         return toolBodyDao.getToolBodyList(query)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun getAvailableValues(filter: Filter, fieldName: String): Flow<List<Int>> {
         val nmlDiameter: Double? = filter.nmlDiameter
         val ZEFP: Int? = filter.ZEFP
@@ -62,8 +62,6 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             argumentsArr.add("ZEFP = '$ZEFP'")
         }
 
-        println("ToolDataBaseApp getAvailableValues $argumentsArr")
-
         if (argumentsArr.isNotEmpty()) {
             str = "WHERE " +  argumentsArr.joinToString(" AND ")
         }
@@ -82,6 +80,33 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             .mapLatest { it }
 
         return flow
+    }
+
+    fun getAvailableValues2(filter: Filter2) {
+        filter.fields.forEach {
+            println("ToolDataBaseApp ${it.key} ${it.value.name}")
+
+            val query = RoomRawQuery(
+                sql = "SELECT DISTINCT ${it.value.name} FROM tool_body ORDER BY ${it.value.name} ASC",
+            )
+
+            if (it.value.typeData == NameType.INT) {
+                println("ToolDataBaseApp ${toolBodyDao.getAllValuesInt(query)}")
+                (it.value as ControlFilter2<Int>).values = toolBodyDao.getAllValuesInt(query)
+            }
+
+            if (it.value.typeData == NameType.DOUBLE) {
+                println("ToolDataBaseApp ${toolBodyDao.getAllValuesDouble(query)}")
+                (it.value as ControlFilter2<Double>).values = toolBodyDao.getAllValuesDouble(query)
+            }
+
+            if (it.value.typeData == NameType.STRING) {
+                println("ToolDataBaseApp ${toolBodyDao.getAllValuesString(query)}")
+                (it.value as ControlFilter2<String>).values = toolBodyDao.getAllValuesString(query)
+            }
+        }
+
+        println("ToolDataBaseApp ${filter.fields}")
     }
 
     fun getAvailableFilters(filter: Filter): Flow<AvailableFilters> {
@@ -114,21 +139,53 @@ data class Filter(
     var series: String? = null
 )
 
-data class Filter2(
-    val nmlDiameter: ControlFilter2<Double> = ControlFilter2(
-        name = "nmlDiameter",
-        values = emptyList(),
-        currentValue = null
+class Filter2 {
+    val fields: Map<String, ControlFilter2<out Any>> = mapOf(
+        NameField.NML_DIAMETER.name to ControlFilter2<Double>(
+            name = NameField.NML_DIAMETER.value,
+            values = emptyList(),
+            availableValues = emptyList(),
+            currentValue = null,
+            typeData = NameType.DOUBLE
+        ),
+        NameField.ZEFP.name to ControlFilter2<Int>(
+            name = NameField.ZEFP.value,
+            values = emptyList(),
+            availableValues = emptyList(),
+            currentValue = null,
+            typeData = NameType.INT
+        ),
+        NameField.SERIES.name to ControlFilter2<String>(
+            name = NameField.SERIES.value,
+            values = emptyList(),
+            availableValues = emptyList(),
+            currentValue = null,
+            typeData = NameType.STRING
+        )
     )
-)
+}
+
+enum class NameField(val value: String) {
+    NML_DIAMETER(value = "nmlDiameter"),
+    ZEFP(value = "ZEFP"),
+    SERIES(value = "series")
+}
+
+enum class NameType {
+    INT,
+    DOUBLE,
+    STRING,
+}
 
 data class ControlFilter2<T>(
     val name: String,
-    val values: List<ControlValue<T>> = emptyList(),
-    val currentValue: T? = null,
+    var currentValue: T? = null,
+    var values: List<T> = emptyList(),
+    var availableValues: List<T> = emptyList(),
+    val typeData:NameType
 )
 
-data class ControlValue<T>(
+data class ControlValue2<T>(
     val value: T,
     val isActive: Boolean = true
 )

@@ -36,8 +36,8 @@ fun HomeScreen() {
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
     val stateAvailableFilters = vmToolBodyList.availableFilters.collectAsState()
 
-    println("ToolDataBaseApp allSeries ${stateAvailableFilters.value.allSeries}")
-    println("ToolDataBaseApp availableZEFP ${stateAvailableFilters.value.availableZEFP}")
+//    println("ToolDataBaseApp allSeries ${stateAvailableFilters.value.allSeries}")
+//    println("ToolDataBaseApp availableZEFP ${stateAvailableFilters.value.availableZEFP}")
 
     ScreenLayout(
         title = "Home",
@@ -139,6 +139,8 @@ fun HomeScreen() {
                     .fillMaxWidth(),
                 text = "Test",
                 onClick = {
+                    vmToolBodyList.update()
+
 //                    vmToolBodyList.updateFilter(
 //                        filter = stateFilter.value.copy(nmlDiameter = 80.0)
 //                    )

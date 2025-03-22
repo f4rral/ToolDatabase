@@ -8,7 +8,10 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
 import com.example.tooldatabase.data.AvailableFilters
 import com.example.tooldatabase.data.Filter
+import com.example.tooldatabase.data.Filter2
 import com.example.tooldatabase.data.ToolBodyRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -49,6 +53,12 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     fun update() {
         println("ToolBodyListVM update 1")
+
+        val filter2 = Filter2()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.getAvailableValues2(filter2)
+        }
     }
 }
 
