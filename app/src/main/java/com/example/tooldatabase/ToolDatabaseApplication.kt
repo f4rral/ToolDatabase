@@ -6,7 +6,7 @@ import com.example.tooldatabase.data.ToolBodyRepository
 import com.example.tooldatabase.data.ToolDatabase
 
 class ToolDatabaseApplication : Application() {
-    val database by lazy {
+    private val database: ToolDatabase by lazy {
         ToolDatabase.createDatabase(this)
     }
 
