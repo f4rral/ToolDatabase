@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tooldatabase.data.NameField
 import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
 import com.example.tooldatabase.data.ToolBody
@@ -35,6 +36,7 @@ fun HomeScreen() {
     val items = vmToolBodyList.items.collectAsState()
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
     val stateAvailableFilters = vmToolBodyList.availableFilters.collectAsState()
+    val stateFilter2 = vmToolBodyList.stateFilter2Flow.collectAsState()
 
 //    println("ToolDataBaseApp allSeries ${stateAvailableFilters.value.allSeries}")
 //    println("ToolDataBaseApp availableZEFP ${stateAvailableFilters.value.availableZEFP}")
@@ -70,9 +72,16 @@ fun HomeScreen() {
 //
 //            Text(text = sliderPosition.floatValue.toString())
 
+            println("ToolDataBaseApp C ${stateFilter2.value.fields[NameField.SERIES.name]?.availableValues}")
+
+            stateFilter2.value.fields[NameField.SERIES.name]!!.availableValues.forEach { value ->
+                println("ToolDataBaseApp D $value")
+            }
+
             Spinner(
                 label = "Серия",
-                options = (listOf(null) + stateAvailableFilters.value.allSeries).map {
+//                options = (listOf(null) + stateAvailableFilters.value.allSeries).map {
+                options = (listOf(null) + stateFilter2.value.fields[NameField.SERIES.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любая", null)
                     } else {
@@ -81,14 +90,15 @@ fun HomeScreen() {
                 },
                 onClickItem = { value ->
                     vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(series = value)
+                        filter = stateFilter.value.copy(series = value.toString())
                     )
                 }
             )
 
             Spinner(
                 label = "Номинальный диаметр",
-                options = (listOf(null) + stateAvailableFilters.value.allNmlDiameter).map {
+//                options = (listOf(null) + stateAvailableFilters.value.allNmlDiameter).map {
+                options = (listOf(null) + stateFilter2.value.fields[NameField.NML_DIAMETER.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любой", null)
                     } else {
@@ -97,14 +107,15 @@ fun HomeScreen() {
                 },
                 onClickItem = { value ->
                     vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(nmlDiameter = value)
+                        filter = stateFilter.value.copy(nmlDiameter = value as Double)
                     )
                 }
             )
 
             Spinner(
                 label = "Кол-во зубьев",
-                options = (listOf(null) + stateAvailableFilters.value.allZEFP).map {
+//                options = (listOf(null) + stateAvailableFilters.value.allZEFP).map {
+                options = (listOf(null) + stateFilter2.value.fields[NameField.ZEFP.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любой", null)
                     } else {
@@ -113,7 +124,7 @@ fun HomeScreen() {
                 },
                 onClickItem = { value ->
                     vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(ZEFP = value)
+                        filter = stateFilter.value.copy(ZEFP = value as Int)
                     )
                 }
             )
@@ -139,6 +150,7 @@ fun HomeScreen() {
                     .fillMaxWidth(),
                 text = "Test",
                 onClick = {
+                    stateFilter2.value
                     vmToolBodyList.update()
 
 //                    vmToolBodyList.updateFilter(

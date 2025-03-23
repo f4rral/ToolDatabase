@@ -9,6 +9,7 @@ import com.example.tooldatabase.ToolDatabaseApplication
 import com.example.tooldatabase.data.AvailableFilters
 import com.example.tooldatabase.data.Filter
 import com.example.tooldatabase.data.Filter2
+import com.example.tooldatabase.data.NameField
 import com.example.tooldatabase.data.ToolBodyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,18 +48,24 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     fun updateFilter(filter: Filter) {
         _stateFilterFlow.update {
-            println("ToolBodyListVM updateFilter $filter")
             filter
         }
     }
 
-    fun update() {
-        println("ToolBodyListVM update 1")
+    private var _stateFilter2Flow = MutableStateFlow(Filter2())
+    val stateFilter2Flow = _stateFilter2Flow.asStateFlow()
 
-        val filter2 = Filter2()
+    fun update() {
+        println("ToolDataBaseApp update")
 
         CoroutineScope(Dispatchers.IO).launch {
-            repository.getAvailableValues2(filter2)
+//            _stateFilter2Flow = MutableStateFlow(repository.getAvailableValues2(_stateFilter2Flow.value))
+            println("ToolDataBaseApp _stateFilter2Flow ${_stateFilter2Flow.value.fields}")
+
+            _stateFilter2Flow.update { filter2 ->
+                println("ToolDataBaseApp G ${repository.getAvailableValues2(filter2)}")
+                repository.getAvailableValues2(filter2)
+            }
         }
     }
 }
