@@ -27,14 +27,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     private val _stateFilterFlow = MutableStateFlow(Filter())
     var stateFilterFlow = _stateFilterFlow.asStateFlow()
 
-    private val _items = _stateFilterFlow
-        .flatMapLatest { filter ->
-            repository.getToolBodyList(filter)
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    var items = _items
-
-    val availableFilters = _stateFilterFlow
+    private val _availableFilters = _stateFilterFlow
         .flatMapLatest { filter ->
             repository.getAvailableFilters(filter)
         }
@@ -43,6 +36,14 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
             started =  SharingStarted.WhileSubscribed(),
             initialValue = AvailableFilters()
         )
+    var availableFilters = _availableFilters
+
+    private val _items = _stateFilterFlow
+        .flatMapLatest { filter ->
+            repository.getToolBodyList(filter)
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    var items = _items
 
     fun updateFilter(filter: Filter) {
         _stateFilterFlow.update {
