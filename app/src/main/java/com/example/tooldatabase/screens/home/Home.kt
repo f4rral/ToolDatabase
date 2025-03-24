@@ -72,7 +72,7 @@ fun HomeScreen() {
 //
 //            Text(text = sliderPosition.floatValue.toString())
 
-            println("ToolDataBaseApp C ${stateFilter2.value.fields[NameField.SERIES.name]?.availableValues}")
+//            println("ToolDataBaseApp C ${stateFilter2.value.fields[NameField.SERIES.name]?.availableValues}")
 
             stateFilter2.value.fields[NameField.SERIES.name]!!.availableValues.forEach { value ->
                 println("ToolDataBaseApp D $value")
@@ -89,8 +89,10 @@ fun HomeScreen() {
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(series = value as String?)
+                    vmToolBodyList.updateFilter2<String>(
+                        filter = stateFilter2.value,
+                        fieldName = NameField.SERIES,
+                        value = value!!
                     )
                 }
             )
@@ -102,7 +104,11 @@ fun HomeScreen() {
                     if (it == null) {
                         SpinnerOption("Любой", null)
                     } else {
-                        SpinnerOption("$it мм", it)
+                        SpinnerOption(
+                            title = "$it мм",
+                            value = it,
+                            isEnabled = it in stateFilter2.value.fields[NameField.NML_DIAMETER.name]!!.availableValues
+                        )
                     }
                 },
                 onClickItem = { value ->

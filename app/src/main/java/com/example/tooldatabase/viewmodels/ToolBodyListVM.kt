@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
 import com.example.tooldatabase.data.AvailableFilters
+import com.example.tooldatabase.data.ControlFilter2
 import com.example.tooldatabase.data.Filter
 import com.example.tooldatabase.data.Filter2
 import com.example.tooldatabase.data.NameField
@@ -59,14 +60,46 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         println("ToolDataBaseApp update")
 
         CoroutineScope(Dispatchers.IO).launch {
-//            _stateFilter2Flow = MutableStateFlow(repository.getAvailableValues2(_stateFilter2Flow.value))
-            println("ToolDataBaseApp _stateFilter2Flow ${_stateFilter2Flow.value.fields}")
-
             _stateFilter2Flow.update { filter2 ->
-                println("ToolDataBaseApp G ${repository.getAvailableValues2(filter2)}")
-                repository.getAvailableValues2(filter2)
+//                val list = repository.getUpdateAvailableValues2(
+//                    filter = filter2,
+//                    fieldName = NameField.ZEFP
+//                )
+
+//                println("ToolDataBaseApp F $list")
+
+                repository.getAllUpdateAvailableValues2(filter2)
+
+//                filter2
             }
         }
+    }
+
+    fun <T> updateFilter2(filter: Filter2, fieldName: NameField, value: Any) {
+        filter.fields[fieldName.name] = filter.fields[fieldName.name]!!.copy()
+        println("ToolDataBaseApp M ${filter.fields[fieldName.name]}")
+
+        var t = filter.fields
+        t.put(fieldName.name, (filter.fields[fieldName.name] as ControlFilter2<String>).copy(currentValue = value as String))
+
+        _stateFilter2Flow.update {
+            filter.copy()
+        }
+    }
+
+    private fun updateValues() {
+        println("ToolDataBaseApp updateValues")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            _stateFilter2Flow.update { filter2 ->
+//                println("ToolDataBaseApp G ${repository.getUpdateValues2(filter2)}")
+                repository.getUpdateValues2(filter2)
+            }
+        }
+    }
+
+    init {
+        updateValues()
     }
 }
 
