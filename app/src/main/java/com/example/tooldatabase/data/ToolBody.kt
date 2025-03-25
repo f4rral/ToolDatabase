@@ -14,3 +14,24 @@ data class ToolBody(
     var nmlDiameter: Double,
     var ZEFP: Int,
 )
+
+class ToolBodyFakeData {
+    companion object {
+        val toolBodyFake = ToolBody(
+            id = 0,
+            title = "Концевая фреза с круглыми СМП",
+            series = "MT1",
+            KAPR = 0.0,
+            ORDCODE = "MT100-012W16R01RD08",
+            nmlDiameter = 12.0,
+            ZEFP = 1,
+        )
+
+        val toolBodyListFake = listOf(
+            toolBodyFake,
+            toolBodyFake,
+            toolBodyFake,
+            toolBodyFake
+        )
+    }
+}

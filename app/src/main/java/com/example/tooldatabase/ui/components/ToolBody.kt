@@ -27,19 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tooldatabase.data.ToolBody
+import com.example.tooldatabase.data.ToolBodyFakeData
 import com.example.tooldatabase.ui.theme.ThemeColor
 import com.example.tooldatabase.ui.theme.ToolDatabaseTheme
 
-
-class ToolBody {
-    companion object {
-        val toolBodyListFake = listOf(
-            ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1, series = "MT1", KAPR = 0.0),
-            ToolBody(id = 1, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1, series = "MT1", KAPR = 0.0),
-            ToolBody(id = 2, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1, series = "MT1", KAPR = 0.0)
-        )
-    }
-}
 
 @Composable
 fun ToolBodyItem(
@@ -178,7 +169,7 @@ fun ToolBodyDetail(
 
 @Composable
 fun ToolBodyList(
-    toolBodyList: List<ToolBody> = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake,
+    toolBodyList: List<ToolBody> = listOf(),
     onClickItem: ((id: Int) -> Unit)? = null
 ) {
     LazyColumn(
@@ -199,7 +190,7 @@ fun ToolBodyList(
 private fun ToolBodyPreview() {
     ToolDatabaseTheme {
         ToolBodyList(
-            toolBodyList = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake
+            toolBodyList = ToolBodyFakeData.toolBodyListFake
         )
     }
 }
@@ -208,7 +199,7 @@ private fun ToolBodyPreview() {
 @Composable
 private fun ToolBodyItemPreview() {
     ToolDatabaseTheme {
-        ToolBodyItem(item = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake[0])
+        ToolBodyItem(item = ToolBodyFakeData.toolBodyFake)
     }
 }
 
@@ -216,6 +207,6 @@ private fun ToolBodyItemPreview() {
 @Composable
 private fun ContactDetailPreview() {
     ToolDatabaseTheme {
-        ToolBodyDetail(item = com.example.tooldatabase.ui.components.tool_body.ToolBody.toolBodyListFake[0])
+        ToolBodyDetail(item = ToolBodyFakeData.toolBodyFake)
     }
 }
