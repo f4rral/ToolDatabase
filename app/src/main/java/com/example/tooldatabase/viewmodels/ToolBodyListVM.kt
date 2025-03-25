@@ -27,14 +27,6 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     private var _stateFilterFlow = MutableStateFlow(Filter())
     val stateFilterFlow = _stateFilterFlow.asStateFlow()
 
-    fun update() {
-        CoroutineScope(Dispatchers.IO).launch {
-            _stateFilterFlow.update { filter ->
-                repository.getAllUpdateAvailableValues2(filter)
-            }
-        }
-    }
-
     private val _items = _stateFilterFlow
         .flatMapLatest { filter ->
             repository.getToolBodyList(filter)
@@ -45,8 +37,8 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     fun <T> updateFilter(filter: Filter, fieldName: NameField, value: Any) {
         filter.fields[fieldName.name] = filter.fields[fieldName.name]!!.copy()
 
-        var t = filter.fields
-        t.put(fieldName.name, (filter.fields[fieldName.name] as ControlFilter<Any>).copy(currentValue = value as T))
+        filter.fields
+            .put(fieldName.name, (filter.fields[fieldName.name] as ControlFilter<Any>).copy(currentValue = value as T))
 
         _stateFilterFlow.update {
             filter.copy()
@@ -56,13 +48,22 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     private fun updateValues() {
         CoroutineScope(Dispatchers.IO).launch {
             _stateFilterFlow.update { filter ->
-                repository.getUpdateValues2(filter)
+                repository.updateValues(filter)
+            }
+        }
+    }
+
+    fun updateAvailableValues() {
+        CoroutineScope(Dispatchers.IO).launch {
+            _stateFilterFlow.update { filter ->
+                repository.updateAvailableValues(filter)
             }
         }
     }
 
     init {
         updateValues()
+        updateAvailableValues()
     }
 }
 

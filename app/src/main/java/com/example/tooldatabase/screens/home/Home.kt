@@ -70,7 +70,11 @@ fun HomeScreen() {
                     if (it == null) {
                         SpinnerOption("Любая", null)
                     } else {
-                        SpinnerOption("$it", it)
+                        SpinnerOption(
+                            title = "$it мм",
+                            value = it,
+                            isEnabled = it in stateFilter.value.fields[NameField.SERIES.name]!!.availableValues
+                        )
                     }
                 },
                 onClickItem = { value ->
@@ -147,7 +151,7 @@ fun HomeScreen() {
                     .fillMaxWidth(),
                 text = "Test",
                 onClick = {
-                    vmToolBodyList.update()
+                    vmToolBodyList.updateAvailableValues()
                 }
             )
 

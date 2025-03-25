@@ -48,7 +48,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         return query
     }
 
-    fun getAllUpdateAvailableValues2(filter: Filter): Filter {
+    fun updateAvailableValues(filter: Filter): Filter {
         val newFields: MutableMap<String, ControlFilter<out Any>> = mutableMapOf()
 
         filter.fields.forEach() {
@@ -76,7 +76,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         return filter.copy(fields = newFields)
     }
 
-    fun getUpdateValues2(filter: Filter): Filter {
+    fun updateValues(filter: Filter): Filter {
         val newFields: MutableMap<String, ControlFilter<out Any>> = mutableMapOf()
 
         filter.fields.forEach() {
