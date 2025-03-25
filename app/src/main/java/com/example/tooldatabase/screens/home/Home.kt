@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tooldatabase.data.ControlFilter
 import com.example.tooldatabase.data.NameField
 import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
@@ -71,17 +72,16 @@ fun HomeScreen() {
                         SpinnerOption("Любая", null)
                     } else {
                         SpinnerOption(
-                            title = "$it мм",
+                            title = "$it",
                             value = it,
                             isEnabled = it in stateFilter.value.fields[NameField.SERIES.name]!!.availableValues
                         )
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter<String>(
+                    vmToolBodyList.updateFilter(
                         filter = stateFilter.value,
-                        fieldName = NameField.SERIES,
-                        value = value!!
+                        controlFilter = (stateFilter.value.fields[NameField.SERIES.name] as ControlFilter<String?>).copy(currentValue = value as String?)
                     )
                 }
             )
@@ -100,10 +100,9 @@ fun HomeScreen() {
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter<Double>(
+                    vmToolBodyList.updateFilter(
                         filter = stateFilter.value,
-                        fieldName = NameField.NML_DIAMETER,
-                        value = value!!
+                        controlFilter = (stateFilter.value.fields[NameField.NML_DIAMETER.name] as ControlFilter<Double?>).copy(currentValue = value as Double?)
                     )
                 }
             )
@@ -122,10 +121,9 @@ fun HomeScreen() {
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter<Int>(
+                    vmToolBodyList.updateFilter(
                         filter = stateFilter.value,
-                        fieldName = NameField.ZEFP,
-                        value = value!!
+                        controlFilter = (stateFilter.value.fields[NameField.ZEFP.name] as ControlFilter<Int?>).copy(currentValue = value as Int?)
                     )
                 }
             )

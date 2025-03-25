@@ -10,7 +10,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 
         filter.fields.forEach {
             if (it.value.currentValue != null) {
-                argumentsArr.add("${it.value.name} = '${it.value.currentValue}'")
+                argumentsArr.add("${it.value.filedName.value} = '${it.value.currentValue}'")
             }
         }
 
@@ -30,9 +30,9 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         var str = ""
 
         filter.fields.forEach() {
-            if (it.value.name != fieldName) {
+            if (it.value.filedName.value != fieldName) {
                 if (it.value.currentValue != null) {
-                    argumentsArr.add("${it.value.name} = '${it.value.currentValue}'")
+                    argumentsArr.add("${it.value.filedName.value} = '${it.value.currentValue}'")
                 }
             }
         }
@@ -54,7 +54,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         filter.fields.forEach() {
             val sqlQuery = getUpdateAvailableValues2(
                 filter = filter,
-                fieldName = it.value.name
+                fieldName = it.value.filedName.value
             )
 
             if (it.value.typeData == NameType.INT) {
@@ -81,7 +81,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 
         filter.fields.forEach() {
             val query = RoomRawQuery(
-                sql = "SELECT DISTINCT ${it.value.name} FROM tool_body ORDER BY ${it.value.name} ASC",
+                sql = "SELECT DISTINCT ${it.value.filedName.value} FROM tool_body ORDER BY ${it.value.filedName.value} ASC",
             )
 
             if (it.value.typeData == NameType.INT) {
@@ -107,21 +107,21 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 data class Filter (
     val fields: MutableMap<String, ControlFilter<out Any>> = mutableMapOf(
         NameField.NML_DIAMETER.name to ControlFilter<Double>(
-            name = NameField.NML_DIAMETER.value,
+            filedName = NameField.NML_DIAMETER,
             values = listOf(),
             availableValues = listOf(),
             currentValue = null,
             typeData = NameType.DOUBLE
         ),
         NameField.ZEFP.name to ControlFilter<Int>(
-            name = NameField.ZEFP.value,
+            filedName = NameField.ZEFP,
             values = listOf(),
             availableValues = listOf(),
             currentValue = null,
             typeData = NameType.INT
         ),
         NameField.SERIES.name to ControlFilter<String>(
-            name = NameField.SERIES.value,
+            filedName = NameField.SERIES,
             values = listOf(),
             availableValues = listOf(),
             currentValue = null,
@@ -131,7 +131,7 @@ data class Filter (
 )
 
 data class ControlFilter<T>(
-    val name: String,
+    val filedName: NameField,
     var currentValue: T? = null,
     var values: List<T> = listOf(),
     var availableValues: List<T> = listOf(),
