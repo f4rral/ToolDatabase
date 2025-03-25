@@ -80,7 +80,6 @@ fun HomeScreen() {
                 },
                 onClickItem = { value ->
                     vmToolBodyList.updateFilter(
-                        filter = stateFilter.value,
                         controlFilter = (stateFilter.value.fields[NameField.SERIES.name] as ControlFilter<String?>).copy(currentValue = value as String?)
                     )
                 }
@@ -101,7 +100,6 @@ fun HomeScreen() {
                 },
                 onClickItem = { value ->
                     vmToolBodyList.updateFilter(
-                        filter = stateFilter.value,
                         controlFilter = (stateFilter.value.fields[NameField.NML_DIAMETER.name] as ControlFilter<Double?>).copy(currentValue = value as Double?)
                     )
                 }
@@ -122,7 +120,6 @@ fun HomeScreen() {
                 },
                 onClickItem = { value ->
                     vmToolBodyList.updateFilter(
-                        filter = stateFilter.value,
                         controlFilter = (stateFilter.value.fields[NameField.ZEFP.name] as ControlFilter<Int?>).copy(currentValue = value as Int?)
                     )
                 }
