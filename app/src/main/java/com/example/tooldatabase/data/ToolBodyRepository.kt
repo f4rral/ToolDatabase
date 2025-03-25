@@ -18,8 +18,6 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             str = "WHERE " +  argumentsArr.joinToString(" AND ")
         }
 
-        println("ToolDataBaseApp STR $str")
-
         val query = RoomRawQuery(
             sql = "SELECT * FROM tool_body $str",
         )

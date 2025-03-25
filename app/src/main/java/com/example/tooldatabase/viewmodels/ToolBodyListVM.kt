@@ -28,8 +28,6 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     val stateFilterFlow = _stateFilterFlow.asStateFlow()
 
     fun update() {
-        println("ToolDataBaseApp update")
-
         CoroutineScope(Dispatchers.IO).launch {
             _stateFilterFlow.update { filter ->
                 repository.getAllUpdateAvailableValues2(filter)
@@ -39,7 +37,6 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     private val _items = _stateFilterFlow
         .flatMapLatest { filter ->
-            println("ToolDataBaseApp S $filter")
             repository.getToolBodyList(filter)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -57,8 +54,6 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     }
 
     private fun updateValues() {
-        println("ToolDataBaseApp updateValues")
-
         CoroutineScope(Dispatchers.IO).launch {
             _stateFilterFlow.update { filter ->
                 repository.getUpdateValues2(filter)
