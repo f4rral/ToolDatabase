@@ -4,72 +4,51 @@ import androidx.room.RoomRawQuery
 import kotlinx.coroutines.flow.Flow
 
 class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
-    fun getToolBodyList(filter: Filter): Flow<List<ToolBody>> {
-        val argumentsArr = mutableListOf<String>()
-        var str = ""
-
-        filter.fields.forEach {
-            if (it.value.currentValue != null) {
-                argumentsArr.add("${it.value.filedName.value} = '${it.value.currentValue}'")
-            }
-        }
-
-        if (argumentsArr.isNotEmpty()) {
-            str = "WHERE " +  argumentsArr.joinToString(" AND ")
-        }
-
-        val query = RoomRawQuery(
-            sql = "SELECT * FROM tool_body $str",
-        )
-
-        return toolBodyDao.getToolBodyList(query)
-    }
-
-    fun getUpdateAvailableValues2(filter: Filter, fieldName: String): RoomRawQuery {
-        val argumentsArr = mutableListOf<String>()
-        var str = ""
+    private fun getDistinctRoomRawQuery(filter: Filter, forFieldName: String): RoomRawQuery {
+        val whereArguments = mutableListOf<String>()
+        var whereString = ""
 
         filter.fields.forEach() {
-            if (it.value.filedName.value != fieldName) {
+            if (it.value.filedName.value != forFieldName) {
                 if (it.value.currentValue != null) {
-                    argumentsArr.add("${it.value.filedName.value} = '${it.value.currentValue}'")
+                    whereArguments.add("${it.value.filedName.value} = '${it.value.currentValue}'")
                 }
             }
         }
 
-        if (argumentsArr.isNotEmpty()) {
-            str = "WHERE " +  argumentsArr.joinToString(" AND ")
+        if (whereArguments.isNotEmpty()) {
+            whereString = "WHERE " +  whereArguments.joinToString(" AND ")
         }
 
-        val query = RoomRawQuery(
-            sql = "SELECT DISTINCT $fieldName FROM tool_body $str ORDER BY $fieldName ASC",
+        val roomRawQuery = RoomRawQuery(
+            sql = "SELECT DISTINCT $forFieldName FROM tool_body $whereString ORDER BY $forFieldName ASC",
         )
 
-        return query
+        return roomRawQuery
     }
 
     fun updateAvailableValues(filter: Filter): Filter {
         val newFields: MutableMap<String, ControlFilter<out Any>> = mutableMapOf()
 
         filter.fields.forEach() {
-            val sqlQuery = getUpdateAvailableValues2(
+            val roomRawQuery = getDistinctRoomRawQuery(
                 filter = filter,
-                fieldName = it.value.filedName.value
+                forFieldName = it.value.filedName.value
             )
 
             if (it.value.typeData == NameType.INT) {
                 newFields[it.key] = (it.value as ControlFilter<Int>)
-                    .copy(availableValues = toolBodyDao.getListInt(sqlQuery))
+                    .copy(availableValues = toolBodyDao.getListInt(roomRawQuery))
             }
 
             if (it.value.typeData == NameType.DOUBLE) {
                 newFields[it.key] = (it.value as ControlFilter<Double>)
-                    .copy(availableValues = toolBodyDao.getListDouble(sqlQuery))
+                    .copy(availableValues = toolBodyDao.getListDouble(roomRawQuery))
             }
 
             if (it.value.typeData == NameType.STRING) {
                 newFields[it.key] = (it.value as ControlFilter<String>)
-                    .copy(availableValues = toolBodyDao.getListString(sqlQuery))
+                    .copy(availableValues = toolBodyDao.getListString(roomRawQuery))
             }
         }
 
@@ -101,6 +80,27 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         }
 
         return filter.copy(fields = newFields)
+    }
+
+    fun getToolBodyListFlow(filter: Filter): Flow<List<ToolBody>> {
+        val whereArguments = mutableListOf<String>()
+        var whereString = ""
+
+        filter.fields.forEach {
+            if (it.value.currentValue != null) {
+                whereArguments.add("${it.value.filedName.value} = '${it.value.currentValue}'")
+            }
+        }
+
+        if (whereArguments.isNotEmpty()) {
+            whereString = "WHERE " +  whereArguments.joinToString(" AND ")
+        }
+
+        val query = RoomRawQuery(
+            sql = "SELECT * FROM tool_body $whereString",
+        )
+
+        return toolBodyDao.getToolBodyList(query)
     }
 }
 
@@ -135,7 +135,7 @@ data class ControlFilter<T>(
     var currentValue: T? = null,
     var values: List<T> = listOf(),
     var availableValues: List<T> = listOf(),
-    val typeData:NameType
+    val typeData: NameType
 )
 
 enum class NameField(val value: String) {
