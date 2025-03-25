@@ -75,12 +75,20 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         }
     }
 
+    private val _items2 = _stateFilter2Flow
+        .flatMapLatest { filter ->
+            println("ToolDataBaseApp S $filter")
+            repository.getToolBodyList(filter)
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    var items2 = _items2
+
     fun <T> updateFilter2(filter: Filter2, fieldName: NameField, value: Any) {
         filter.fields[fieldName.name] = filter.fields[fieldName.name]!!.copy()
-        println("ToolDataBaseApp M ${filter.fields[fieldName.name]}")
+//        println("ToolDataBaseApp M ${filter.fields[fieldName.name]}")
 
         var t = filter.fields
-        t.put(fieldName.name, (filter.fields[fieldName.name] as ControlFilter2<String>).copy(currentValue = value as String))
+        t.put(fieldName.name, (filter.fields[fieldName.name] as ControlFilter2<Any>).copy(currentValue = value as T))
 
         _stateFilter2Flow.update {
             filter.copy()

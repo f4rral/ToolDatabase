@@ -41,6 +41,29 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         return toolBodyDao.getToolBodyList(query)
     }
 
+    fun getToolBodyList(filter: Filter2): Flow<List<ToolBody>> {
+        val argumentsArr = mutableListOf<String>()
+        var str = ""
+
+        filter.fields.forEach {
+            if (it.value.currentValue != null) {
+                argumentsArr.add("${it.value.name} = '${it.value.currentValue}'")
+            }
+        }
+
+        if (argumentsArr.isNotEmpty()) {
+            str = "WHERE " +  argumentsArr.joinToString(" AND ")
+        }
+
+        println("ToolDataBaseApp STR $str")
+
+        val query = RoomRawQuery(
+            sql = "SELECT * FROM tool_body $str",
+        )
+
+        return toolBodyDao.getToolBodyList(query)
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getAvailableValuesFlow(filter: Filter, fieldName: String): Flow<List<Int>> {
         val nmlDiameter: Double? = filter.nmlDiameter
@@ -98,7 +121,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             str = "WHERE " +  argumentsArr.joinToString(" AND ")
         }
 
-        println("ToolDataBaseApp Z $argumentsArr")
+//        println("ToolDataBaseApp Z $argumentsArr")
 
         val query = RoomRawQuery(
             sql = "SELECT DISTINCT $fieldName FROM tool_body $str ORDER BY $fieldName ASC",
@@ -133,7 +156,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             }
         }
 
-        println("ToolDataBaseApp Y $newFields")
+//        println("ToolDataBaseApp Y $newFields")
 
         return filter.copy(fields = newFields)
     }
@@ -209,7 +232,7 @@ data class Filter2 (
             name = NameField.NML_DIAMETER.value,
             values = listOf(),
             availableValues = listOf(),
-            currentValue = 50.0,
+            currentValue = null,
             typeData = NameType.DOUBLE
         ),
         NameField.ZEFP.name to ControlFilter2<Int>(
@@ -223,7 +246,7 @@ data class Filter2 (
             name = NameField.SERIES.value,
             values = listOf(),
             availableValues = listOf(),
-            currentValue = "MT1",
+            currentValue = null,
             typeData = NameType.STRING
         )
     )

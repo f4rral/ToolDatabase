@@ -34,6 +34,7 @@ fun HomeScreen() {
     )
 
     val items = vmToolBodyList.items.collectAsState()
+    val items2 = vmToolBodyList.items2.collectAsState()
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
     val stateAvailableFilters = vmToolBodyList.availableFilters.collectAsState()
     val stateFilter2 = vmToolBodyList.stateFilter2Flow.collectAsState()
@@ -75,7 +76,7 @@ fun HomeScreen() {
 //            println("ToolDataBaseApp C ${stateFilter2.value.fields[NameField.SERIES.name]?.availableValues}")
 
             stateFilter2.value.fields[NameField.SERIES.name]!!.availableValues.forEach { value ->
-                println("ToolDataBaseApp D $value")
+//                println("ToolDataBaseApp D $value")
             }
 
             Spinner(
@@ -112,8 +113,10 @@ fun HomeScreen() {
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(nmlDiameter = value as Double?)
+                    vmToolBodyList.updateFilter2<Double>(
+                        filter = stateFilter2.value,
+                        fieldName = NameField.NML_DIAMETER,
+                        value = value!!
                     )
                 }
             )
@@ -125,12 +128,18 @@ fun HomeScreen() {
                     if (it == null) {
                         SpinnerOption("Любой", null)
                     } else {
-                        SpinnerOption("$it", it)
+                        SpinnerOption(
+                            title = "$it",
+                            value = it,
+                            isEnabled = it in stateFilter2.value.fields[NameField.ZEFP.name]!!.availableValues
+                        )
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter(
-                        filter = stateFilter.value.copy(ZEFP = value as Int?)
+                    vmToolBodyList.updateFilter2<Int>(
+                        filter = stateFilter2.value,
+                        fieldName = NameField.ZEFP,
+                        value = value!!
                     )
                 }
             )
@@ -156,7 +165,7 @@ fun HomeScreen() {
                     .fillMaxWidth(),
                 text = "Test",
                 onClick = {
-                    stateFilter2.value
+//                    stateFilter2.value
                     vmToolBodyList.update()
 
 //                    vmToolBodyList.updateFilter(
@@ -166,7 +175,7 @@ fun HomeScreen() {
             )
 
             HomeBody(
-                toolBodyList = items.value
+                toolBodyList = items2.value
             )
         }
     }
