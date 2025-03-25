@@ -33,12 +33,12 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
 
-    fun <T> updateFilter(controlFilter: ControlFilter<T>) {
+    fun updateFilter(controlFilter: ControlFilter) {
         _stateFilterFlow.update {
             it.fields
                 .put(
                     controlFilter.filedName.name,
-                    (controlFilter as ControlFilter<Any>).copy()
+                    (controlFilter).copy()
                 )
 
             it.copy()

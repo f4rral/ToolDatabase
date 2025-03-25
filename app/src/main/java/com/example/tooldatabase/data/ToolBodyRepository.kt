@@ -28,7 +28,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
     }
 
     fun updateAvailableValues(filter: Filter): Filter {
-        val newFields: MutableMap<String, ControlFilter<out Any>> = mutableMapOf()
+        val newFields: MutableMap<String, ControlFilter> = mutableMapOf()
 
         filter.fields.forEach() {
             val roomRawQuery = getDistinctRoomRawQuery(
@@ -37,17 +37,17 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             )
 
             if (it.value.typeData == NameType.INT) {
-                newFields[it.key] = (it.value as ControlFilter<Int>)
+                newFields[it.key] = (it.value)
                     .copy(availableValues = toolBodyDao.getListInt(roomRawQuery))
             }
 
             if (it.value.typeData == NameType.DOUBLE) {
-                newFields[it.key] = (it.value as ControlFilter<Double>)
+                newFields[it.key] = (it.value)
                     .copy(availableValues = toolBodyDao.getListDouble(roomRawQuery))
             }
 
             if (it.value.typeData == NameType.STRING) {
-                newFields[it.key] = (it.value as ControlFilter<String>)
+                newFields[it.key] = (it.value)
                     .copy(availableValues = toolBodyDao.getListString(roomRawQuery))
             }
         }
@@ -56,7 +56,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
     }
 
     fun updateValues(filter: Filter): Filter {
-        val newFields: MutableMap<String, ControlFilter<out Any>> = mutableMapOf()
+        val newFields: MutableMap<String, ControlFilter> = mutableMapOf()
 
         filter.fields.forEach() {
             val query = RoomRawQuery(
@@ -64,17 +64,17 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             )
 
             if (it.value.typeData == NameType.INT) {
-                newFields[it.key] = (it.value as ControlFilter<Int>)
+                newFields[it.key] = (it.value)
                     .copy(values = toolBodyDao.getListInt(query))
             }
 
             if (it.value.typeData == NameType.DOUBLE) {
-                newFields[it.key] = (it.value as ControlFilter<Double>)
+                newFields[it.key] = (it.value)
                     .copy(values = toolBodyDao.getListDouble(query))
             }
 
             if (it.value.typeData == NameType.STRING) {
-                newFields[it.key] = (it.value as ControlFilter<String>)
+                newFields[it.key] = (it.value)
                     .copy(values = toolBodyDao.getListString(query))
             }
         }
@@ -105,22 +105,22 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 }
 
 data class Filter (
-    val fields: MutableMap<String, ControlFilter<out Any>> = mutableMapOf(
-        NameField.NML_DIAMETER.name to ControlFilter<Double>(
+    val fields: MutableMap<String, ControlFilter> = mutableMapOf(
+        NameField.NML_DIAMETER.name to ControlFilter(
             filedName = NameField.NML_DIAMETER,
             values = listOf(),
             availableValues = listOf(),
             currentValue = null,
             typeData = NameType.DOUBLE
         ),
-        NameField.ZEFP.name to ControlFilter<Int>(
+        NameField.ZEFP.name to ControlFilter(
             filedName = NameField.ZEFP,
             values = listOf(),
             availableValues = listOf(),
             currentValue = null,
             typeData = NameType.INT
         ),
-        NameField.SERIES.name to ControlFilter<String>(
+        NameField.SERIES.name to ControlFilter(
             filedName = NameField.SERIES,
             values = listOf(),
             availableValues = listOf(),
@@ -130,11 +130,11 @@ data class Filter (
     )
 )
 
-data class ControlFilter<T>(
+data class ControlFilter(
     val filedName: NameField,
-    var currentValue: T? = null,
-    var values: List<T> = listOf(),
-    var availableValues: List<T> = listOf(),
+    var currentValue: Any? = null,
+    var values: List<Any> = listOf(),
+    var availableValues: List<Any> = listOf(),
     val typeData: NameType
 )
 
