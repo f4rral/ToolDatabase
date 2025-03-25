@@ -30,8 +30,8 @@ fun HomeScreen() {
         factory = ToolBodyListVMFactory()
     )
 
-    val items2 = vmToolBodyList.items.collectAsState()
-    val stateFilter2 = vmToolBodyList.stateFilterFlow.collectAsState()
+    val items = vmToolBodyList.items.collectAsState()
+    val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
 
     ScreenLayout(
         title = "Home",
@@ -66,8 +66,7 @@ fun HomeScreen() {
 
             Spinner(
                 label = "Серия",
-//                options = (listOf(null) + stateAvailableFilters.value.allSeries).map {
-                options = (listOf(null) + stateFilter2.value.fields[NameField.SERIES.name]!!.values).map {
+                options = (listOf(null) + stateFilter.value.fields[NameField.SERIES.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любая", null)
                     } else {
@@ -75,8 +74,8 @@ fun HomeScreen() {
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter2<String>(
-                        filter = stateFilter2.value,
+                    vmToolBodyList.updateFilter<String>(
+                        filter = stateFilter.value,
                         fieldName = NameField.SERIES,
                         value = value!!
                     )
@@ -85,20 +84,20 @@ fun HomeScreen() {
 
             Spinner(
                 label = "Номинальный диаметр",
-                options = (listOf(null) + stateFilter2.value.fields[NameField.NML_DIAMETER.name]!!.values).map {
+                options = (listOf(null) + stateFilter.value.fields[NameField.NML_DIAMETER.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любой", null)
                     } else {
                         SpinnerOption(
                             title = "$it мм",
                             value = it,
-                            isEnabled = it in stateFilter2.value.fields[NameField.NML_DIAMETER.name]!!.availableValues
+                            isEnabled = it in stateFilter.value.fields[NameField.NML_DIAMETER.name]!!.availableValues
                         )
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter2<Double>(
-                        filter = stateFilter2.value,
+                    vmToolBodyList.updateFilter<Double>(
+                        filter = stateFilter.value,
                         fieldName = NameField.NML_DIAMETER,
                         value = value!!
                     )
@@ -107,20 +106,20 @@ fun HomeScreen() {
 
             Spinner(
                 label = "Кол-во зубьев",
-                options = (listOf(null) + stateFilter2.value.fields[NameField.ZEFP.name]!!.values).map {
+                options = (listOf(null) + stateFilter.value.fields[NameField.ZEFP.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любой", null)
                     } else {
                         SpinnerOption(
                             title = "$it",
                             value = it,
-                            isEnabled = it in stateFilter2.value.fields[NameField.ZEFP.name]!!.availableValues
+                            isEnabled = it in stateFilter.value.fields[NameField.ZEFP.name]!!.availableValues
                         )
                     }
                 },
                 onClickItem = { value ->
-                    vmToolBodyList.updateFilter2<Int>(
-                        filter = stateFilter2.value,
+                    vmToolBodyList.updateFilter<Int>(
+                        filter = stateFilter.value,
                         fieldName = NameField.ZEFP,
                         value = value!!
                     )
@@ -153,7 +152,7 @@ fun HomeScreen() {
             )
 
             HomeBody(
-                toolBodyList = items2.value
+                toolBodyList = items.value
             )
         }
     }

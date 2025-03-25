@@ -31,8 +31,8 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         println("ToolDataBaseApp update")
 
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilterFlow.update { filter2 ->
-                repository.getAllUpdateAvailableValues2(filter2)
+            _stateFilterFlow.update { filter ->
+                repository.getAllUpdateAvailableValues2(filter)
             }
         }
     }
@@ -45,7 +45,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
 
-    fun <T> updateFilter2(filter: Filter, fieldName: NameField, value: Any) {
+    fun <T> updateFilter(filter: Filter, fieldName: NameField, value: Any) {
         filter.fields[fieldName.name] = filter.fields[fieldName.name]!!.copy()
 
         var t = filter.fields
@@ -60,8 +60,8 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         println("ToolDataBaseApp updateValues")
 
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilterFlow.update { filter2 ->
-                repository.getUpdateValues2(filter2)
+            _stateFilterFlow.update { filter ->
+                repository.getUpdateValues2(filter)
             }
         }
     }
