@@ -6,10 +6,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
-import com.example.tooldatabase.data.AvailableFilters
-import com.example.tooldatabase.data.ControlFilter2
+import com.example.tooldatabase.data.ControlFilter
 import com.example.tooldatabase.data.Filter
-import com.example.tooldatabase.data.Filter2
 import com.example.tooldatabase.data.NameField
 import com.example.tooldatabase.data.ToolBodyRepository
 import kotlinx.coroutines.CoroutineScope
@@ -26,71 +24,34 @@ import kotlin.reflect.KClass
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
-    private val _stateFilterFlow = MutableStateFlow(Filter())
-    var stateFilterFlow = _stateFilterFlow.asStateFlow()
-
-    private val _availableFilters = _stateFilterFlow
-        .flatMapLatest { filter ->
-            repository.getAvailableFilters(filter)
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started =  SharingStarted.WhileSubscribed(),
-            initialValue = AvailableFilters()
-        )
-    var availableFilters = _availableFilters
-
-    private val _items = _stateFilterFlow
-        .flatMapLatest { filter ->
-            repository.getToolBodyList(filter)
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    var items = _items
-
-    fun updateFilter(filter: Filter) {
-        _stateFilterFlow.update {
-            filter
-        }
-    }
-
-    private var _stateFilter2Flow = MutableStateFlow(Filter2())
-    val stateFilter2Flow = _stateFilter2Flow.asStateFlow()
+    private var _stateFilterFlow = MutableStateFlow(Filter())
+    val stateFilterFlow = _stateFilterFlow.asStateFlow()
 
     fun update() {
         println("ToolDataBaseApp update")
 
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilter2Flow.update { filter2 ->
-//                val list = repository.getUpdateAvailableValues2(
-//                    filter = filter2,
-//                    fieldName = NameField.ZEFP
-//                )
-
-//                println("ToolDataBaseApp F $list")
-
+            _stateFilterFlow.update { filter2 ->
                 repository.getAllUpdateAvailableValues2(filter2)
-
-//                filter2
             }
         }
     }
 
-    private val _items2 = _stateFilter2Flow
+    private val _items = _stateFilterFlow
         .flatMapLatest { filter ->
             println("ToolDataBaseApp S $filter")
             repository.getToolBodyList(filter)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    var items2 = _items2
+    var items = _items
 
-    fun <T> updateFilter2(filter: Filter2, fieldName: NameField, value: Any) {
+    fun <T> updateFilter2(filter: Filter, fieldName: NameField, value: Any) {
         filter.fields[fieldName.name] = filter.fields[fieldName.name]!!.copy()
-//        println("ToolDataBaseApp M ${filter.fields[fieldName.name]}")
 
         var t = filter.fields
-        t.put(fieldName.name, (filter.fields[fieldName.name] as ControlFilter2<Any>).copy(currentValue = value as T))
+        t.put(fieldName.name, (filter.fields[fieldName.name] as ControlFilter<Any>).copy(currentValue = value as T))
 
-        _stateFilter2Flow.update {
+        _stateFilterFlow.update {
             filter.copy()
         }
     }
@@ -99,8 +60,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         println("ToolDataBaseApp updateValues")
 
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilter2Flow.update { filter2 ->
-//                println("ToolDataBaseApp G ${repository.getUpdateValues2(filter2)}")
+            _stateFilterFlow.update { filter2 ->
                 repository.getUpdateValues2(filter2)
             }
         }
@@ -111,7 +71,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     }
 }
 
-class ToolBodyListVMFactory() : ViewModelProvider.Factory {
+class ToolBodyListVMFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(
         modelClass: KClass<T>,
         extras: CreationExtras

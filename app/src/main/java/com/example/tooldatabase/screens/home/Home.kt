@@ -5,13 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,14 +30,8 @@ fun HomeScreen() {
         factory = ToolBodyListVMFactory()
     )
 
-    val items = vmToolBodyList.items.collectAsState()
-    val items2 = vmToolBodyList.items2.collectAsState()
-    val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
-    val stateAvailableFilters = vmToolBodyList.availableFilters.collectAsState()
-    val stateFilter2 = vmToolBodyList.stateFilter2Flow.collectAsState()
-
-//    println("ToolDataBaseApp allSeries ${stateAvailableFilters.value.allSeries}")
-//    println("ToolDataBaseApp availableZEFP ${stateAvailableFilters.value.availableZEFP}")
+    val items2 = vmToolBodyList.items.collectAsState()
+    val stateFilter2 = vmToolBodyList.stateFilterFlow.collectAsState()
 
     ScreenLayout(
         title = "Home",
@@ -73,12 +64,6 @@ fun HomeScreen() {
 //
 //            Text(text = sliderPosition.floatValue.toString())
 
-//            println("ToolDataBaseApp C ${stateFilter2.value.fields[NameField.SERIES.name]?.availableValues}")
-
-            stateFilter2.value.fields[NameField.SERIES.name]!!.availableValues.forEach { value ->
-//                println("ToolDataBaseApp D $value")
-            }
-
             Spinner(
                 label = "Серия",
 //                options = (listOf(null) + stateAvailableFilters.value.allSeries).map {
@@ -100,7 +85,6 @@ fun HomeScreen() {
 
             Spinner(
                 label = "Номинальный диаметр",
-//                options = (listOf(null) + stateAvailableFilters.value.allNmlDiameter).map {
                 options = (listOf(null) + stateFilter2.value.fields[NameField.NML_DIAMETER.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любой", null)
@@ -123,7 +107,6 @@ fun HomeScreen() {
 
             Spinner(
                 label = "Кол-во зубьев",
-//                options = (listOf(null) + stateAvailableFilters.value.allZEFP).map {
                 options = (listOf(null) + stateFilter2.value.fields[NameField.ZEFP.name]!!.values).map {
                     if (it == null) {
                         SpinnerOption("Любой", null)
@@ -165,12 +148,7 @@ fun HomeScreen() {
                     .fillMaxWidth(),
                 text = "Test",
                 onClick = {
-//                    stateFilter2.value
                     vmToolBodyList.update()
-
-//                    vmToolBodyList.updateFilter(
-//                        filter = stateFilter.value.copy(nmlDiameter = 80.0)
-//                    )
                 }
             )
 
