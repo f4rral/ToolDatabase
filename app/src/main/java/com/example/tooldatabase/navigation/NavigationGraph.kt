@@ -6,7 +6,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.tooldatabase.screens.tool_body.HomeScreen
+import com.example.tooldatabase.screens.tool_body.ToolBodyDetailScreen
+import com.example.tooldatabase.screens.tool_body.ToolBodyList
 
 @Composable
 fun NavigationGraph(
@@ -14,39 +15,33 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "TOOL_BODY_LIST"
     ) {
         composable(
-            route = NavigationRoute.home
+            route = NavigationRoute.TOOL_BODY_LIST
         ) {
-            HomeScreen()
+            ToolBodyList()
         }
 
         composable(
-            route = NavigationRoute.contactCreate
-        ) {
-//            ContactCreateScreen()
-        }
-
-        composable(
-            route = "${NavigationRoute.contactDetail}/{contactId}",
+            route = "${NavigationRoute.TOOL_BODY_DETAIL}/{toolBodyId}",
             arguments = listOf(
-                navArgument("contactId") {
+                navArgument("toolBodyId") {
                     type = NavType.IntType
                 }
             )
         ) { stackEntry ->
-            val contactId = stackEntry.arguments?.getInt("contactId")
+            val toolBodyId = stackEntry.arguments?.getInt("toolBodyId")
 
-            if (contactId != null) {
-//                ContactDetailScreen(contactId)
+            if (toolBodyId != null) {
+                ToolBodyDetailScreen(toolBodyId = toolBodyId)
             }
+
         }
     }
 }
 
 object NavigationRoute {
-    const val home = "HOME"
-    const val contactCreate = "CONTACT_CREATE"
-    const val contactDetail =  "CONTACT_DETAIL"
+    const val TOOL_BODY_LIST = "TOOL_BODY_LIST"
+    const val TOOL_BODY_DETAIL =  "TOOL_BODY_DETAIL"
 }

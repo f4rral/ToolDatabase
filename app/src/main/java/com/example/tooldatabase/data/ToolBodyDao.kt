@@ -1,6 +1,7 @@
 package com.example.tooldatabase.data
 
 import androidx.room.Dao
+import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.RoomRawQuery
 import androidx.room.Update
@@ -10,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 interface ToolBodyDao {
     @Update
     suspend fun updateToolBody(item: ToolBody)
+
+    @Query("SELECT * FROM tool_body WHERE id = :id")
+    fun getToolBodyById(id: Int):ToolBody
 
     @RawQuery(observedEntities = [ToolBody::class])
     fun getToolBodyList(query: RoomRawQuery): Flow<List<ToolBody>>

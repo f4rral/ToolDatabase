@@ -102,6 +102,10 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
 
         return toolBodyDao.getToolBodyList(query)
     }
+
+    fun getToolBodyById(id: Int): ToolBody {
+        return toolBodyDao.getToolBodyById(id)
+    }
 }
 
 data class Filter (

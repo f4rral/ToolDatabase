@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tooldatabase.ToolDatabaseApplication
 import com.example.tooldatabase.data.ControlFilter
 import com.example.tooldatabase.data.Filter
 import com.example.tooldatabase.data.NameField
@@ -19,6 +20,7 @@ import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
 import com.example.tooldatabase.data.ToolBody
 import com.example.tooldatabase.data.ToolBodyFakeData
+import com.example.tooldatabase.navigation.NavigationRoute
 import com.example.tooldatabase.ui.elements.ButtonText
 import com.example.tooldatabase.ui.elements.Spinner
 import com.example.tooldatabase.ui.elements.SpinnerOption
@@ -28,7 +30,7 @@ import com.example.tooldatabase.viewmodels.ToolBodyListVMFactory
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun HomeScreen() {
+fun ToolBodyList() {
     val vmToolBodyList: ToolBodyListVM = viewModel(
         factory = ToolBodyListVMFactory()
     )
@@ -37,7 +39,7 @@ fun HomeScreen() {
     val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
 
     ScreenLayout(
-        title = "Home",
+        title = "ToolBodyList",
     ) {
         Column(
             modifier = Modifier
@@ -63,7 +65,13 @@ fun HomeScreen() {
                         controlFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
                     )
                 },
-                toolBodyList = items.value
+                toolBodyList = items.value,
+                onClickItem = { id ->
+                    println("ToolBodyApp L $id")
+                    ToolDatabaseApplication.context.navController.navigate(
+                        route = "${NavigationRoute.TOOL_BODY_DETAIL}/$id"
+                    )
+                }
             )
         }
     }
@@ -73,7 +81,8 @@ fun HomeScreen() {
 fun HomeBody(
     toolBodyFilter: Filter,
     onChangeFilter: ((value: Any?, field: ControlFilter?) -> Unit)? = null,
-    toolBodyList: List<ToolBody>
+    toolBodyList: List<ToolBody>,
+    onClickItem: ((id: Int) -> Unit)? = null
 ) {
     Column(
         modifier = Modifier
@@ -86,7 +95,8 @@ fun HomeBody(
 
         if (toolBodyList.isNotEmpty()) {
             ToolBodyList(
-                toolBodyList = toolBodyList
+                toolBodyList = toolBodyList,
+                onClickItem = onClickItem
             )
         } else {
             Text(

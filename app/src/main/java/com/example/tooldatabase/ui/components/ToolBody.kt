@@ -130,8 +130,7 @@ fun ToolBodyItem(
 
 @Composable
 fun ToolBodyDetail(
-    item: ToolBody,
-    onDelete: (() -> Unit)? = null
+    toolBody: ToolBody
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -150,7 +149,7 @@ fun ToolBodyDetail(
         )
 
         Text(
-            text = item.ORDCODE,
+            text = toolBody.ORDCODE,
             fontSize = 16.sp,
             fontWeight = FontWeight(600),
             color = ThemeColor.gray7,
@@ -159,7 +158,7 @@ fun ToolBodyDetail(
         )
 
         Text(
-            text = item.id.toString(),
+            text = toolBody.id.toString(),
             fontSize = 14.sp,
             fontWeight = FontWeight(400),
             color = ThemeColor.gray5,
@@ -205,8 +204,8 @@ private fun ToolBodyItemPreview() {
 
 @Preview
 @Composable
-private fun ContactDetailPreview() {
+private fun ToolBodyDetailPreview() {
     ToolDatabaseTheme {
-        ToolBodyDetail(item = ToolBodyFakeData.toolBodyFake)
+        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBodyFake)
     }
 }
