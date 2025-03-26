@@ -31,7 +31,7 @@ data class SpinnerOption<T>(
 @Composable
 fun <T> Spinner(
     label: String = "spinner.label",
-    options: List<SpinnerOption<T>>,
+    options: List<SpinnerOption<T>> = listOf(),
     onClickItem: ((value: T?) -> Unit)? = null
 ) {
     var expanded by remember { mutableStateOf(false) }
