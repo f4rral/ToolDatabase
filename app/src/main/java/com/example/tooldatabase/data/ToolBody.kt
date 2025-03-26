@@ -2,17 +2,34 @@ package com.example.tooldatabase.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "tool_body")
 data class ToolBody(
     @PrimaryKey
-    var id: Int? = null,
+    var id: Int?,
     var title: String? = "",
+    var ORDCODE: String = "",
     var series: String? = "",
     var KAPR: Double? = null,
-    var ORDCODE: String,
-    var nmlDiameter: Double,
+    var cuttingPart: String? = null,
     var ZEFP: Int,
+    var DCON: Double? = null,
+    var APMX: Double? = null,
+    var nmlDiameter: Double,
+    var directionCutting: String? = null,
+    var formFixPart: String? = null,
+    var sizeFixPart: Int? = null,
+    var isDrilling: Int? = 0,
+    var isPlunger: Int? = 0,
+    var isAerospace: Int? = 0,
+    var isTitan: Int? = 0,
+    var isAluminum: Int? = 0,
+    var nMax: Double? = null,
+    var weight: Double? = null,
+    var coolantHoles: Int? = 0,
+    var MIID_0: String? = null,
+    var MIID_1: String? = null,
 )
 
 class ToolBodyFakeData {
