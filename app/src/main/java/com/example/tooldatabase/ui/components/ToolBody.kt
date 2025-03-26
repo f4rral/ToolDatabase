@@ -34,13 +34,21 @@ import com.example.tooldatabase.ui.theme.ToolDatabaseTheme
 
 @Composable
 fun ToolBodyItem(
-    item: ToolBody = ToolBody(id = 0, ORDCODE = "MT100-012W16R01RD08", nmlDiameter = 12.0, ZEFP = 1),
+    item: ToolBody = ToolBody(
+        id = -1,
+        title = "",
+        series = "",
+        KAPR = 0.0,
+        ORDCODE = "",
+        nmlDiameter = 0.0,
+        ZEFP = 0
+    ),
     onClick: ((id: Int) -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(16.dp)),
+            .clip(shape = RoundedCornerShape(4.dp)),
         colors = CardDefaults.cardColors(
             containerColor = ThemeColor.gray2,
         ),
@@ -65,7 +73,7 @@ fun ToolBodyItem(
             Column(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(start = 8.dp)
+                    .padding(start = 16.dp)
                     .fillMaxHeight()
 
             ) {
@@ -73,52 +81,20 @@ fun ToolBodyItem(
                     text = item.ORDCODE,
                     fontSize = 16.sp,
                     fontWeight = FontWeight(600),
-                    lineHeight = 19.sp,
+                    lineHeight = 18.sp,
                     color = ThemeColor.gray7,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
                 )
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .padding(top = 8.dp)
                 ) {
                     Text(
-                        text = "id: ${item.id.toString()}",
+                        text = "D фрезы: ${item.nmlDiameter}",
                         fontSize = 14.sp,
                         fontWeight = FontWeight(400),
-                        lineHeight = 17.sp,
-                        color = ThemeColor.gray5
-                    )
-
-                    Text(
-                        text = "D: ${item.nmlDiameter.toString()}",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(400),
-                        lineHeight = 17.sp,
-                        color = ThemeColor.gray5
-                    )
-
-                    Text(
-                        text = "z: ${item.ZEFP.toString()}",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(400),
-                        lineHeight = 17.sp,
-                        color = ThemeColor.gray5
-                    )
-
-                    Text(
-                        text = "s: ${item.series}",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(400),
-                        lineHeight = 17.sp,
-                        color = ThemeColor.gray5
-                    )
-
-                    Text(
-                        text = "k: ${item.KAPR}",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(400),
-                        lineHeight = 17.sp,
+                        lineHeight = 16.sp,
                         color = ThemeColor.gray5
                     )
                 }
@@ -132,8 +108,15 @@ fun ToolBodyItem(
 fun ToolBodyDetail(
     toolBody: ToolBody
 ) {
+    val mainParameters = mapOf(
+        "Серия" to toolBody.series,
+        "Номинальный диаметр" to toolBody.nmlDiameter,
+        "Угол в плане" to toolBody.KAPR,
+        "Кол-во зубъев" to toolBody.ZEFP
+    )
+
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         modifier = Modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(12.dp))
@@ -150,7 +133,7 @@ fun ToolBodyDetail(
 
         Text(
             text = toolBody.ORDCODE,
-            fontSize = 16.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = ThemeColor.gray7,
             modifier = Modifier
@@ -158,11 +141,35 @@ fun ToolBodyDetail(
         )
 
         Text(
-            text = toolBody.id.toString(),
-            fontSize = 14.sp,
+            text = toolBody.title!!,
+            fontSize = 16.sp,
             fontWeight = FontWeight(400),
+            lineHeight = 18.sp,
             color = ThemeColor.gray5,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
         )
+
+        Text(
+            text = "Основные параметры:",
+            fontSize = 20.sp,
+            fontWeight = FontWeight(600),
+            color = ThemeColor.gray7,
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+        )
+
+        for ((key, value) in mainParameters) {
+            Text(
+                text = "$key: $value",
+                fontSize = 16.sp,
+                fontWeight = FontWeight(400),
+                lineHeight = 18.sp,
+                color = ThemeColor.gray5,
+                modifier = Modifier
+                    .padding(bottom = 4.dp)
+            )
+        }
     }
 }
 
@@ -209,3 +216,12 @@ private fun ToolBodyDetailPreview() {
         ToolBodyDetail(toolBody = ToolBodyFakeData.toolBodyFake)
     }
 }
+
+@Preview
+@Composable
+private fun ToolBodyDetailPreview2() {
+    ToolDatabaseTheme {
+        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBodyFake2)
+    }
+}
+

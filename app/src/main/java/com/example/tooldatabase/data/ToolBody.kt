@@ -27,11 +27,21 @@ class ToolBodyFakeData {
             ZEFP = 1,
         )
 
+        val toolBodyFake2 = ToolBody(
+            id = 1,
+            title = "Концевая фреза 90° удлиненная с коротким рабочим вылетом с внутренней подачей СОЖ",
+            series = "MT1",
+            KAPR = 0.0,
+            ORDCODE = "MT190-016Z16R02BD10-H025-L090-IK",
+            nmlDiameter = 16.0,
+            ZEFP = 2,
+        )
+
         val toolBodyListFake = listOf(
             toolBodyFake,
+            toolBodyFake2,
             toolBodyFake,
-            toolBodyFake,
-            toolBodyFake
+            toolBodyFake2
         )
     }
 }
