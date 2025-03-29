@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
-import com.example.tooldatabase.data.ControlFilter
-import com.example.tooldatabase.data.Filter
 import com.example.tooldatabase.data.ToolBodyRepository
+import com.example.tooldatabase.model.ControlFilter
+import com.example.tooldatabase.model.FilterToolBody
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,10 +23,10 @@ import kotlin.reflect.KClass
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
-    private var _stateFilterFlow = MutableStateFlow(Filter())
-    val stateFilterFlow = _stateFilterFlow.asStateFlow()
+    private var _stateFilterToolBodyFlow = MutableStateFlow(FilterToolBody())
+    val stateFilterFlow = _stateFilterToolBodyFlow.asStateFlow()
 
-    private val _items = _stateFilterFlow
+    private val _items = _stateFilterToolBodyFlow
         .flatMapLatest { filter ->
             repository.getToolBodyListFlow(filter)
         }
@@ -34,7 +34,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     var items = _items
 
     fun updateFilter(controlFilter: ControlFilter) {
-        _stateFilterFlow.update {
+        _stateFilterToolBodyFlow.update {
             it.fields
                 .put(
                     controlFilter.filedName.name,
@@ -47,7 +47,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     private fun updateValues() {
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilterFlow.update { filter ->
+            _stateFilterToolBodyFlow.update { filter ->
                 repository.updateValues(filter)
             }
         }
@@ -55,7 +55,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     fun updateAvailableValues() {
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilterFlow.update { filter ->
+            _stateFilterToolBodyFlow.update { filter ->
                 repository.updateAvailableValues(filter)
             }
         }

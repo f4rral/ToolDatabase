@@ -3,14 +3,17 @@ package com.example.tooldatabase.data
 import androidx.room.RoomRawQuery
 import com.example.tooldatabase.data.db.tool_body.ToolBody
 import com.example.tooldatabase.data.db.tool_body.ToolBodyDao
+import com.example.tooldatabase.model.ControlFilter
+import com.example.tooldatabase.model.FilterToolBody
+import com.example.tooldatabase.model.NameType
 import kotlinx.coroutines.flow.Flow
 
 class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
-    private fun getDistinctRoomRawQuery(filter: Filter, forFieldName: String): RoomRawQuery {
+    private fun getDistinctRoomRawQuery(filterToolBody: FilterToolBody, forFieldName: String): RoomRawQuery {
         val whereArguments = mutableListOf<String>()
         var whereString = ""
 
-        filter.fields.forEach() {
+        filterToolBody.fields.forEach() {
             if (it.value.filedName.value != forFieldName) {
                 if (it.value.currentValue != null) {
                     whereArguments.add("${it.value.filedName.value} = '${it.value.currentValue}'")
@@ -29,23 +32,23 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         return roomRawQuery
     }
 
-    fun updateAvailableValues(filter: Filter): Filter {
+    fun updateAvailableValues(filterToolBody: FilterToolBody): FilterToolBody {
         val newFields: MutableMap<String, ControlFilter> = mutableMapOf()
 
-        filter.fields.forEach() {
+        filterToolBody.fields.forEach() {
             val roomRawQuery = getDistinctRoomRawQuery(
-                filter = filter,
+                filterToolBody = filterToolBody,
                 forFieldName = it.value.filedName.value
             )
 
             if (it.value.typeData == NameType.INT) {
                 newFields[it.key] = (it.value)
-                    .copy(availableValues = toolBodyDao.getListInt(roomRawQuery))
+                    .copy(availableValues = toolBodyDao.getListValuesInt(roomRawQuery))
             }
 
             if (it.value.typeData == NameType.DOUBLE) {
                 newFields[it.key] = (it.value)
-                    .copy(availableValues = toolBodyDao.getListDouble(roomRawQuery))
+                    .copy(availableValues = toolBodyDao.getListValuesDouble(roomRawQuery))
             }
 
             if (it.value.typeData == NameType.STRING) {
@@ -54,25 +57,25 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             }
         }
 
-        return filter.copy(fields = newFields)
+        return filterToolBody.copy(fields = newFields)
     }
 
-    fun updateValues(filter: Filter): Filter {
+    fun updateValues(filterToolBody: FilterToolBody): FilterToolBody {
         val newFields: MutableMap<String, ControlFilter> = mutableMapOf()
 
-        filter.fields.forEach() {
+        filterToolBody.fields.forEach() {
             val query = RoomRawQuery(
                 sql = "SELECT DISTINCT ${it.value.filedName.value} FROM tool_body ORDER BY ${it.value.filedName.value} ASC",
             )
 
             if (it.value.typeData == NameType.INT) {
                 newFields[it.key] = (it.value)
-                    .copy(values = toolBodyDao.getListInt(query))
+                    .copy(values = toolBodyDao.getListValuesInt(query))
             }
 
             if (it.value.typeData == NameType.DOUBLE) {
                 newFields[it.key] = (it.value)
-                    .copy(values = toolBodyDao.getListDouble(query))
+                    .copy(values = toolBodyDao.getListValuesDouble(query))
             }
 
             if (it.value.typeData == NameType.STRING) {
@@ -81,14 +84,14 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
             }
         }
 
-        return filter.copy(fields = newFields)
+        return filterToolBody.copy(fields = newFields)
     }
 
-    fun getToolBodyListFlow(filter: Filter): Flow<List<ToolBody>> {
+    fun getToolBodyListFlow(filterToolBody: FilterToolBody): Flow<List<ToolBody>> {
         val whereArguments = mutableListOf<String>()
         var whereString = ""
 
-        filter.fields.forEach {
+        filterToolBody.fields.forEach {
             if (it.value.currentValue != null) {
                 whereArguments.add("${it.value.filedName.value} = '${it.value.currentValue}'")
             }
@@ -108,50 +111,4 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
     fun getToolBodyById(id: Int): ToolBody {
         return toolBodyDao.getToolBodyById(id)
     }
-}
-
-data class Filter (
-    val fields: MutableMap<String, ControlFilter> = mutableMapOf(
-        NameField.NML_DIAMETER.name to ControlFilter(
-            filedName = NameField.NML_DIAMETER,
-            values = listOf(),
-            availableValues = listOf(),
-            currentValue = null,
-            typeData = NameType.DOUBLE
-        ),
-        NameField.ZEFP.name to ControlFilter(
-            filedName = NameField.ZEFP,
-            values = listOf(),
-            availableValues = listOf(),
-            currentValue = null,
-            typeData = NameType.INT
-        ),
-        NameField.SERIES.name to ControlFilter(
-            filedName = NameField.SERIES,
-            values = listOf(),
-            availableValues = listOf(),
-            currentValue = null,
-            typeData = NameType.STRING
-        )
-    )
-)
-
-data class ControlFilter(
-    val filedName: NameField,
-    var currentValue: Any? = null,
-    var values: List<Any> = listOf(),
-    var availableValues: List<Any> = listOf(),
-    val typeData: NameType
-)
-
-enum class NameField(val value: String) {
-    NML_DIAMETER(value = "nmlDiameter"),
-    ZEFP(value = "ZEFP"),
-    SERIES(value = "series")
-}
-
-enum class NameType {
-    INT,
-    DOUBLE,
-    STRING,
 }

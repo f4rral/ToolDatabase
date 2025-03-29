@@ -13,13 +13,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tooldatabase.ToolDatabaseApplication
-import com.example.tooldatabase.data.ControlFilter
-import com.example.tooldatabase.data.Filter
-import com.example.tooldatabase.data.NameField
 import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
 import com.example.tooldatabase.data.db.tool_body.ToolBody
 import com.example.tooldatabase.data.db.tool_body.ToolBodyFakeData
+import com.example.tooldatabase.model.ControlFilter
+import com.example.tooldatabase.model.FilterToolBody
+import com.example.tooldatabase.model.NameField
 import com.example.tooldatabase.navigation.NavigationRoute
 import com.example.tooldatabase.ui.elements.ButtonText
 import com.example.tooldatabase.ui.elements.Spinner
@@ -57,7 +57,7 @@ fun ToolBodyList() {
             )
 
             HomeBody(
-                toolBodyFilter = stateFilter.value,
+                toolBodyFilterToolBody = stateFilter.value,
                 onChangeFilter = { value, field ->
                     println("ToolBodyApp F $value $field")
 
@@ -79,7 +79,7 @@ fun ToolBodyList() {
 
 @Composable
 fun HomeBody(
-    toolBodyFilter: Filter,
+    toolBodyFilterToolBody: FilterToolBody,
     onChangeFilter: ((value: Any?, field: ControlFilter?) -> Unit)? = null,
     toolBodyList: List<ToolBody>,
     onClickItem: ((id: Int) -> Unit)? = null
@@ -89,7 +89,7 @@ fun HomeBody(
             .fillMaxSize()
     ) {
         ToolBodyFilter(
-            filter = toolBodyFilter,
+            filterToolBody = toolBodyFilterToolBody,
             onChangeFilter = onChangeFilter
         )
 
@@ -108,20 +108,20 @@ fun HomeBody(
 
 @Composable
 fun ToolBodyFilter(
-    filter: Filter,
+    filterToolBody: FilterToolBody,
     onChangeFilter: ((value: Any?, field: ControlFilter?) -> Unit)? = null
 ) {
     Column {
         Spinner(
             label = "Серия",
-            options = (listOf(null) + filter.fields[NameField.SERIES.name]!!.values).map {
+            options = (listOf(null) + filterToolBody.fields[NameField.SERIES.name]!!.values).map {
                 if (it == null) {
                     SpinnerOption("Любая", null)
                 } else {
                     SpinnerOption(
                         title = "$it",
                         value = it,
-                        isEnabled = it in filter.fields[NameField.SERIES.name]!!.availableValues
+                        isEnabled = it in filterToolBody.fields[NameField.SERIES.name]!!.availableValues
                     )
                 }
             },
@@ -129,7 +129,7 @@ fun ToolBodyFilter(
                     if (onChangeFilter != null) {
                         onChangeFilter(
                             value,
-                            filter.fields[NameField.SERIES.name]
+                            filterToolBody.fields[NameField.SERIES.name]
                         )
                     }
             }
@@ -137,14 +137,14 @@ fun ToolBodyFilter(
 
         Spinner(
             label = "Номинальный диаметр",
-            options = (listOf(null) + filter.fields[NameField.NML_DIAMETER.name]!!.values).map {
+            options = (listOf(null) + filterToolBody.fields[NameField.NML_DIAMETER.name]!!.values).map {
                 if (it == null) {
                     SpinnerOption("Любой", null)
                 } else {
                     SpinnerOption(
                         title = "$it мм",
                         value = it,
-                        isEnabled = it in filter.fields[NameField.NML_DIAMETER.name]!!.availableValues
+                        isEnabled = it in filterToolBody.fields[NameField.NML_DIAMETER.name]!!.availableValues
                     )
                 }
             },
@@ -152,7 +152,7 @@ fun ToolBodyFilter(
                 if (onChangeFilter != null) {
                     onChangeFilter(
                         value,
-                        filter.fields[NameField.NML_DIAMETER.name]
+                        filterToolBody.fields[NameField.NML_DIAMETER.name]
                     )
                 }
             }
@@ -160,14 +160,14 @@ fun ToolBodyFilter(
 
         Spinner(
             label = "Кол-во зубьев",
-            options = (listOf(null) + filter.fields[NameField.ZEFP.name]!!.values).map {
+            options = (listOf(null) + filterToolBody.fields[NameField.ZEFP.name]!!.values).map {
                 if (it == null) {
                     SpinnerOption("Любой", null)
                 } else {
                     SpinnerOption(
                         title = "$it",
                         value = it,
-                        isEnabled = it in filter.fields[NameField.ZEFP.name]!!.availableValues
+                        isEnabled = it in filterToolBody.fields[NameField.ZEFP.name]!!.availableValues
                     )
                 }
             },
@@ -175,7 +175,7 @@ fun ToolBodyFilter(
                 if (onChangeFilter != null) {
                     onChangeFilter(
                         value,
-                        filter.fields[NameField.ZEFP.name]
+                        filterToolBody.fields[NameField.ZEFP.name]
                     )
                 }
             }
@@ -188,7 +188,7 @@ fun ToolBodyFilter(
 fun HomeScreenPreview() {
     ScreenLayout {
         HomeBody(
-            toolBodyFilter = Filter(),
+            toolBodyFilterToolBody = FilterToolBody(),
             toolBodyList = ToolBodyFakeData.toolBodyListFake
         )
     }
