@@ -1,6 +1,8 @@
 package com.example.tooldatabase.data
 
 import androidx.room.RoomRawQuery
+import com.example.tooldatabase.data.db.tool_body.ToolBody
+import com.example.tooldatabase.data.db.tool_body.ToolBodyDao
 import kotlinx.coroutines.flow.Flow
 
 class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {

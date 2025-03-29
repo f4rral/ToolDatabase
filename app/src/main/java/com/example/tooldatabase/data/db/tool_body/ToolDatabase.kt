@@ -1,4 +1,4 @@
-package com.example.tooldatabase.data
+package com.example.tooldatabase.data.db.tool_body
 
 import android.content.Context
 import androidx.room.Database

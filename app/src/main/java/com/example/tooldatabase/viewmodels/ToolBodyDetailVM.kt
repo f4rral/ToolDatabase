@@ -3,10 +3,9 @@ package com.example.tooldatabase.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
-import com.example.tooldatabase.data.ToolBody
+import com.example.tooldatabase.data.db.tool_body.ToolBody
 import com.example.tooldatabase.data.ToolBodyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

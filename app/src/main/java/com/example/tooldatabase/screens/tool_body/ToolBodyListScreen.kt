@@ -18,8 +18,8 @@ import com.example.tooldatabase.data.Filter
 import com.example.tooldatabase.data.NameField
 import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
-import com.example.tooldatabase.data.ToolBody
-import com.example.tooldatabase.data.ToolBodyFakeData
+import com.example.tooldatabase.data.db.tool_body.ToolBody
+import com.example.tooldatabase.data.db.tool_body.ToolBodyFakeData
 import com.example.tooldatabase.navigation.NavigationRoute
 import com.example.tooldatabase.ui.elements.ButtonText
 import com.example.tooldatabase.ui.elements.Spinner

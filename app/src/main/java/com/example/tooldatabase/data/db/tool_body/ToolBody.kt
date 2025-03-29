@@ -1,8 +1,7 @@
-package com.example.tooldatabase.data
+package com.example.tooldatabase.data.db.tool_body
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.jetbrains.annotations.NotNull
 
 @Entity(tableName = "tool_body")
 data class ToolBody(
@@ -34,7 +33,7 @@ data class ToolBody(
 
 class ToolBodyFakeData {
     companion object {
-        val toolBodyFake = ToolBody(
+        val toolBody1 = ToolBody(
             id = 0,
             title = "Концевая фреза с круглыми СМП",
             series = "MT1",
@@ -44,7 +43,7 @@ class ToolBodyFakeData {
             ZEFP = 1,
         )
 
-        val toolBodyFake2 = ToolBody(
+        val toolBody2 = ToolBody(
             id = 1,
             title = "Концевая фреза 90° удлиненная с коротким рабочим вылетом с внутренней подачей СОЖ",
             series = "MT1",
@@ -55,10 +54,10 @@ class ToolBodyFakeData {
         )
 
         val toolBodyListFake = listOf(
-            toolBodyFake,
-            toolBodyFake2,
-            toolBodyFake,
-            toolBodyFake2
+            toolBody1,
+            toolBody2,
+            toolBody1,
+            toolBody2
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tooldatabase.data
+package com.example.tooldatabase.data.db.tool_body
 
 import androidx.room.Dao
 import androidx.room.Query
@@ -13,7 +13,7 @@ interface ToolBodyDao {
     suspend fun updateToolBody(item: ToolBody)
 
     @Query("SELECT * FROM tool_body WHERE id = :id")
-    fun getToolBodyById(id: Int):ToolBody
+    fun getToolBodyById(id: Int): ToolBody
 
     @RawQuery(observedEntities = [ToolBody::class])
     fun getToolBodyList(query: RoomRawQuery): Flow<List<ToolBody>>

@@ -26,8 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tooldatabase.data.ToolBody
-import com.example.tooldatabase.data.ToolBodyFakeData
+import com.example.tooldatabase.data.db.tool_body.ToolBody
+import com.example.tooldatabase.data.db.tool_body.ToolBodyFakeData
 import com.example.tooldatabase.ui.theme.ThemeColor
 import com.example.tooldatabase.ui.theme.ToolDatabaseTheme
 
@@ -205,7 +205,7 @@ private fun ToolBodyPreview() {
 @Composable
 private fun ToolBodyItemPreview() {
     ToolDatabaseTheme {
-        ToolBodyItem(item = ToolBodyFakeData.toolBodyFake)
+        ToolBodyItem(item = ToolBodyFakeData.toolBody1)
     }
 }
 
@@ -213,7 +213,7 @@ private fun ToolBodyItemPreview() {
 @Composable
 private fun ToolBodyDetailPreview() {
     ToolDatabaseTheme {
-        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBodyFake)
+        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBody1)
     }
 }
 
@@ -221,7 +221,7 @@ private fun ToolBodyDetailPreview() {
 @Composable
 private fun ToolBodyDetailPreview2() {
     ToolDatabaseTheme {
-        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBodyFake2)
+        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBody2)
     }
 }
 
