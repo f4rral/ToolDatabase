@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
 import com.example.tooldatabase.data.db.tool_body.ToolBody
-import com.example.tooldatabase.data.ToolBodyRepository
+import com.example.tooldatabase.repository.ToolBodyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
-import com.example.tooldatabase.data.ToolBodyRepository
+import com.example.tooldatabase.repository.ToolBodyRepository
 import com.example.tooldatabase.models.filter.FieldFilter
 import com.example.tooldatabase.models.filter.FilterToolBody
 import kotlinx.coroutines.CoroutineScope

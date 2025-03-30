@@ -1,4 +1,4 @@
-package com.example.tooldatabase.data
+package com.example.tooldatabase.repository
 
 import androidx.room.RoomRawQuery
 import com.example.tooldatabase.data.db.tool_body.ToolBody
