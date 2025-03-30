@@ -1,22 +1,22 @@
-package com.example.tooldatabase.model
+package com.example.tooldatabase.models.filter
 
 data class FilterToolBody (
-    val fields: MutableMap<String, ControlFilter> = mutableMapOf(
-        NameField.NML_DIAMETER.name to ControlFilter(
+    val fields: MutableMap<String, FieldFilter> = mutableMapOf(
+        NameField.NML_DIAMETER.name to FieldFilter(
             filedName = NameField.NML_DIAMETER,
             values = listOf(),
             availableValues = listOf(),
             currentValue = null,
             typeData = NameType.DOUBLE
         ),
-        NameField.ZEFP.name to ControlFilter(
+        NameField.ZEFP.name to FieldFilter(
             filedName = NameField.ZEFP,
             values = listOf(),
             availableValues = listOf(),
             currentValue = null,
             typeData = NameType.INT
         ),
-        NameField.SERIES.name to ControlFilter(
+        NameField.SERIES.name to FieldFilter(
             filedName = NameField.SERIES,
             values = listOf(),
             availableValues = listOf(),
@@ -26,7 +26,7 @@ data class FilterToolBody (
     )
 )
 
-data class ControlFilter(
+data class FieldFilter(
     val filedName: NameField,
     var currentValue: Any? = null,
     var values: List<Any> = listOf(),

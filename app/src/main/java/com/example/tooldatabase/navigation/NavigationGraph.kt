@@ -6,7 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.tooldatabase.screens.tool_body.ToolBodyDetailScreen
+import com.example.tooldatabase.screens.tool_body.detail.ToolBodyDetailScreen
 import com.example.tooldatabase.screens.tool_body.ToolBodyList
 
 @Composable

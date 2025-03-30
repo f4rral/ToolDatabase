@@ -1,4 +1,4 @@
-package com.example.tooldatabase.viewmodels
+package com.example.tooldatabase.screens.tool_body
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.tooldatabase.ToolDatabaseApplication
 import com.example.tooldatabase.data.ToolBodyRepository
-import com.example.tooldatabase.model.ControlFilter
-import com.example.tooldatabase.model.FilterToolBody
+import com.example.tooldatabase.models.filter.FieldFilter
+import com.example.tooldatabase.models.filter.FilterToolBody
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,12 +33,12 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     var items = _items
 
-    fun updateFilter(controlFilter: ControlFilter) {
+    fun updateFilter(fieldFilter: FieldFilter) {
         _stateFilterToolBodyFlow.update {
             it.fields
                 .put(
-                    controlFilter.filedName.name,
-                    (controlFilter).copy()
+                    fieldFilter.filedName.name,
+                    (fieldFilter).copy()
                 )
 
             it.copy()

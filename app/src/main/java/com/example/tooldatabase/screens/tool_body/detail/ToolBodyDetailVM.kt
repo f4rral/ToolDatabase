@@ -1,4 +1,4 @@
-package com.example.tooldatabase.viewmodels
+package com.example.tooldatabase.screens.tool_body.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

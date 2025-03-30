@@ -1,4 +1,4 @@
-package com.example.tooldatabase.screens.tool_body
+package com.example.tooldatabase.screens.tool_body.detail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tooldatabase.ui.components.tool_body.ToolBodyDetail
 import com.example.tooldatabase.ui.layouts.ScreenLayout
-import com.example.tooldatabase.viewmodels.ToolBodyDetailVM
-import com.example.tooldatabase.viewmodels.ToolBodyDetailVMFactory
 
 @Composable
 fun ToolBodyDetailScreen(toolBodyId: Int) {

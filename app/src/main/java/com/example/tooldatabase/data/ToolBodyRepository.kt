@@ -3,9 +3,9 @@ package com.example.tooldatabase.data
 import androidx.room.RoomRawQuery
 import com.example.tooldatabase.data.db.tool_body.ToolBody
 import com.example.tooldatabase.data.db.tool_body.ToolBodyDao
-import com.example.tooldatabase.model.ControlFilter
-import com.example.tooldatabase.model.FilterToolBody
-import com.example.tooldatabase.model.NameType
+import com.example.tooldatabase.models.filter.FieldFilter
+import com.example.tooldatabase.models.filter.FilterToolBody
+import com.example.tooldatabase.models.filter.NameType
 import kotlinx.coroutines.flow.Flow
 
 class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
@@ -33,7 +33,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
     }
 
     fun updateAvailableValues(filterToolBody: FilterToolBody): FilterToolBody {
-        val newFields: MutableMap<String, ControlFilter> = mutableMapOf()
+        val newFields: MutableMap<String, FieldFilter> = mutableMapOf()
 
         filterToolBody.fields.forEach() {
             val roomRawQuery = getDistinctRoomRawQuery(
@@ -61,7 +61,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
     }
 
     fun updateValues(filterToolBody: FilterToolBody): FilterToolBody {
-        val newFields: MutableMap<String, ControlFilter> = mutableMapOf()
+        val newFields: MutableMap<String, FieldFilter> = mutableMapOf()
 
         filterToolBody.fields.forEach() {
             val query = RoomRawQuery(

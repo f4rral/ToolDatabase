@@ -17,15 +17,13 @@ import com.example.tooldatabase.ui.components.tool_body.ToolBodyList
 import com.example.tooldatabase.ui.layouts.ScreenLayout
 import com.example.tooldatabase.data.db.tool_body.ToolBody
 import com.example.tooldatabase.data.db.tool_body.ToolBodyFakeData
-import com.example.tooldatabase.model.ControlFilter
-import com.example.tooldatabase.model.FilterToolBody
-import com.example.tooldatabase.model.NameField
+import com.example.tooldatabase.models.filter.FieldFilter
+import com.example.tooldatabase.models.filter.FilterToolBody
+import com.example.tooldatabase.models.filter.NameField
 import com.example.tooldatabase.navigation.NavigationRoute
 import com.example.tooldatabase.ui.elements.ButtonText
 import com.example.tooldatabase.ui.elements.Spinner
 import com.example.tooldatabase.ui.elements.SpinnerOption
-import com.example.tooldatabase.viewmodels.ToolBodyListVM
-import com.example.tooldatabase.viewmodels.ToolBodyListVMFactory
 
 
 @SuppressLint("UnrememberedMutableState")
@@ -62,7 +60,7 @@ fun ToolBodyList() {
                     println("ToolBodyApp F $value $field")
 
                     vmToolBodyList.updateFilter(
-                        controlFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
+                        fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
                     )
                 },
                 toolBodyList = items.value,
@@ -80,7 +78,7 @@ fun ToolBodyList() {
 @Composable
 fun HomeBody(
     toolBodyFilterToolBody: FilterToolBody,
-    onChangeFilter: ((value: Any?, field: ControlFilter?) -> Unit)? = null,
+    onChangeFilter: ((value: Any?, field: FieldFilter?) -> Unit)? = null,
     toolBodyList: List<ToolBody>,
     onClickItem: ((id: Int) -> Unit)? = null
 ) {
@@ -109,7 +107,7 @@ fun HomeBody(
 @Composable
 fun ToolBodyFilter(
     filterToolBody: FilterToolBody,
-    onChangeFilter: ((value: Any?, field: ControlFilter?) -> Unit)? = null
+    onChangeFilter: ((value: Any?, field: FieldFilter?) -> Unit)? = null
 ) {
     Column {
         Spinner(
