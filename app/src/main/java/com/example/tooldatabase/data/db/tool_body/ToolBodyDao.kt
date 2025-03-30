@@ -16,7 +16,7 @@ interface ToolBodyDao {
     fun getToolBodyById(id: Int): ToolBody
 
     @RawQuery(observedEntities = [ToolBody::class])
-    fun getToolBodyList(query: RoomRawQuery): Flow<List<ToolBody>>
+    fun getToolBodyList(query: RoomRawQuery): List<ToolBody>
 
     @RawQuery(observedEntities = [ToolBody::class])
     fun getListValuesInt(query: RoomRawQuery): List<Int>

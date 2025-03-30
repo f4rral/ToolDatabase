@@ -33,8 +33,9 @@ fun ToolBodyList() {
         factory = ToolBodyListVMFactory()
     )
 
-    val items = vmToolBodyList.items.collectAsState()
-    val stateFilter = vmToolBodyList.stateFilterFlow.collectAsState()
+//    val items = vmToolBodyList.items.collectAsState()
+    val items2 = vmToolBodyList.items.collectAsState()
+    val stateFilter = vmToolBodyList.stateFilter.collectAsState()
 
     ScreenLayout(
         title = "ToolBodyList",
@@ -50,7 +51,7 @@ fun ToolBodyList() {
                     .fillMaxWidth(),
                 text = "Debug",
                 onClick = {
-                    vmToolBodyList.updateAvailableValues()
+                    vmToolBodyList.debug()
                 }
             )
 
@@ -63,7 +64,7 @@ fun ToolBodyList() {
                         fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
                     )
                 },
-                toolBodyList = items.value,
+                toolBodyList = items2.value,
                 onClickItem = { id ->
                     println("ToolBodyApp L $id")
                     ToolDatabaseApplication.context.navController.navigate(

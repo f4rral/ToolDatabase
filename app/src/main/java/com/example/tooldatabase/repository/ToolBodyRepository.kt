@@ -87,7 +87,7 @@ class ToolBodyRepository(private var toolBodyDao: ToolBodyDao) {
         return filterToolBody.copy(fields = newFields)
     }
 
-    fun getToolBodyListFlow(filterToolBody: FilterToolBody): Flow<List<ToolBody>> {
+    fun getToolBodyList(filterToolBody: FilterToolBody): List<ToolBody> {
         val whereArguments = mutableListOf<String>()
         var whereString = ""
 
