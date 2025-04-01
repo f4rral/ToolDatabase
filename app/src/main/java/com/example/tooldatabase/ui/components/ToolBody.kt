@@ -110,9 +110,17 @@ fun ToolBodyDetail(
 ) {
     val mainParameters = mapOf(
         "Серия" to toolBody.series,
-        "Номинальный диаметр" to toolBody.nmlDiameter,
-        "Угол в плане" to toolBody.KAPR,
-        "Кол-во зубъев" to toolBody.ZEFP
+        "Угол в плане, °" to toolBody.KAPR,
+        "Номинальный диаметр, мм" to toolBody.nmlDiameter,
+        "Макс. глубина резания, мм" to toolBody.APMX,
+        "Число зубъев, шт" to toolBody.ZEFP,
+        "Форма крепежной части" to toolBody.formFixPart,
+        "Размер крепежной части" to toolBody.sizeFixPart,
+        "Типоразмер пластины" to "${toolBody.MIID_0} | ${toolBody.MIID_1}",
+        "Каналы для подачи СОЖ" to toolBody.coolantHoles,
+        "Макс. скорость вращения, об/мин" to toolBody.nMax,
+        "Масса, кг" to toolBody.weight,
+        "Направление резания" to toolBody.directionCutting
     )
 
     Column(
@@ -151,7 +159,7 @@ fun ToolBodyDetail(
         )
 
         Text(
-            text = "Основные параметры:",
+            text = "Характеристики:",
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = ThemeColor.gray7,
@@ -159,16 +167,36 @@ fun ToolBodyDetail(
                 .padding(bottom = 8.dp)
         )
 
-        for ((key, value) in mainParameters) {
-            Text(
-                text = "$key: $value",
-                fontSize = 16.sp,
-                fontWeight = FontWeight(400),
-                lineHeight = 18.sp,
-                color = ThemeColor.gray5,
-                modifier = Modifier
-                    .padding(bottom = 4.dp)
-            )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            for ((key, value) in mainParameters) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = key,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight(400),
+                        lineHeight = 18.sp,
+                        color = ThemeColor.gray5,
+                        modifier = Modifier
+                            .padding(bottom = 4.dp)
+                    )
+
+                    Text(
+                        text = "$value",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight(500),
+                        lineHeight = 18.sp,
+                        color = ThemeColor.gray7,
+                        modifier = Modifier
+                            .padding(bottom = 4.dp)
+                    )
+                }
+            }
         }
     }
 }
