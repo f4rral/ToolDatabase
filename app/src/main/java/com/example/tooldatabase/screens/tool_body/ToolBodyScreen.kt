@@ -55,7 +55,7 @@ fun ToolBodyList() {
                 }
             )
 
-            HomeBody(
+            ToolBodyListBody(
                 toolBodyFilterToolBody = stateFilter.value,
                 onChangeFilter = { value, field ->
                     println("ToolBodyApp F $value $field")
@@ -77,7 +77,7 @@ fun ToolBodyList() {
 }
 
 @Composable
-fun HomeBody(
+fun ToolBodyListBody(
     toolBodyFilterToolBody: FilterToolBody,
     onChangeFilter: ((value: Any?, field: FieldFilter?) -> Unit)? = null,
     toolBodyList: List<ToolBody>,
@@ -110,9 +110,12 @@ fun ToolBodyFilter(
     filterToolBody: FilterToolBody,
     onChangeFilter: ((value: Any?, field: FieldFilter?) -> Unit)? = null
 ) {
+    println("Tool Body App $filterToolBody")
+
     Column {
         Spinner(
             label = "Серия",
+            currentValue = filterToolBody.fields[NameField.SERIES.name]!!.currentValue,
             options = (listOf(null) + filterToolBody.fields[NameField.SERIES.name]!!.values).map {
                 if (it == null) {
                     SpinnerOption("Любая", null)
@@ -136,6 +139,7 @@ fun ToolBodyFilter(
 
         Spinner(
             label = "Номинальный диаметр",
+            currentValue = filterToolBody.fields[NameField.NML_DIAMETER.name]!!.currentValue,
             options = (listOf(null) + filterToolBody.fields[NameField.NML_DIAMETER.name]!!.values).map {
                 if (it == null) {
                     SpinnerOption("Любой", null)
@@ -159,6 +163,7 @@ fun ToolBodyFilter(
 
         Spinner(
             label = "Кол-во зубьев",
+            currentValue = filterToolBody.fields[NameField.ZEFP.name]!!.currentValue,
             options = (listOf(null) + filterToolBody.fields[NameField.ZEFP.name]!!.values).map {
                 if (it == null) {
                     SpinnerOption("Любой", null)
@@ -186,7 +191,7 @@ fun ToolBodyFilter(
 @Composable
 fun HomeScreenPreview() {
     ScreenLayout {
-        HomeBody(
+        ToolBodyListBody(
             toolBodyFilterToolBody = FilterToolBody(),
             toolBodyList = ToolBodyFakeData.toolBodyListFake
         )

@@ -31,11 +31,12 @@ data class SpinnerOption<T>(
 @Composable
 fun <T> Spinner(
     label: String = "spinner.label",
+    currentValue: T? = null,
     options: List<SpinnerOption<T>> = listOf(),
     onClickItem: ((value: T?) -> Unit)? = null
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf("") }
+    var selected by remember { mutableStateOf(currentValue?.toString() ?: "") }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -46,7 +47,7 @@ fun <T> Spinner(
             .fillMaxWidth()
     ) {
         OutlinedTextField(
-            value = selectedText,
+            value = selected,
             onValueChange = {},
             readOnly = true,
             singleLine = true,
@@ -84,8 +85,7 @@ fun <T> Spinner(
                    },
                     onClick = {
                         expanded = false
-
-                        selectedText = if (option.value != null) option.title else ""
+                        selected = if (option.value != null) option.title else ""
 
                         if (onClickItem != null) {
                             onClickItem(option.value)
