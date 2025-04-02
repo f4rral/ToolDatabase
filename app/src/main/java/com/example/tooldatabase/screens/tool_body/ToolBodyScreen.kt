@@ -1,13 +1,22 @@
 package com.example.tooldatabase.screens.tool_body
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,8 +33,10 @@ import com.example.tooldatabase.navigation.NavigationRoute
 import com.example.tooldatabase.ui.elements.ButtonText
 import com.example.tooldatabase.ui.elements.Spinner
 import com.example.tooldatabase.ui.elements.SpinnerOption
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun ToolBodyList() {
@@ -33,9 +44,14 @@ fun ToolBodyList() {
         factory = ToolBodyListVMFactory()
     )
 
-//    val items = vmToolBodyList.items.collectAsState()
-    val items2 = vmToolBodyList.items.collectAsState()
+    val items = vmToolBodyList.items.collectAsState()
     val stateFilter = vmToolBodyList.stateFilter.collectAsState()
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    val scope = rememberCoroutineScope()
+    val showBottomSheet = mutableStateOf(value = false)
 
     ScreenLayout(
         title = "ToolBodyList",
@@ -45,15 +61,71 @@ fun ToolBodyList() {
                 .padding(start = 8.dp, end = 8.dp)
                 .fillMaxSize()
         ) {
+//            ButtonText(
+//                modifier = Modifier
+//                    .padding(top = 16.dp, bottom = 16.dp)
+//                    .fillMaxWidth(),
+//                text = "Debug",
+//                onClick = {
+//                    vmToolBodyList.debug()
+//                }
+//            )
+
             ButtonText(
                 modifier = Modifier
                     .padding(top = 16.dp, bottom = 16.dp)
                     .fillMaxWidth(),
-                text = "Debug",
+                text = "Фильтр",
                 onClick = {
-                    vmToolBodyList.debug()
+                    showBottomSheet.value = true
                 }
             )
+
+            if (showBottomSheet.value) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        showBottomSheet.value = false
+                    },
+                    shape = RoundedCornerShape(0.dp),
+                    sheetState = sheetState,
+                ) {
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight(0.96f)
+                            .padding(8.dp)
+                    ) {
+                        ToolBodyFilter(
+                            filterToolBody = stateFilter.value,
+                            onChangeFilter = { value, field ->
+                                println("ToolBodyApp F $value $field")
+
+                                vmToolBodyList.updateFilter(
+                                    fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
+                                )
+
+                                vmToolBodyList.debug()
+                            },
+                        )
+
+                        ButtonText(
+                            modifier = Modifier
+                                .padding(top = 16.dp, bottom = 16.dp)
+                                .fillMaxWidth(),
+                            text = "Показать",
+                            onClick = {
+                                vmToolBodyList.debug()
+
+                                scope.launch { sheetState.hide() }.invokeOnCompletion {
+                                    if (!sheetState.isVisible) {
+                                        showBottomSheet.value = false
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
+            }
 
             ToolBodyListBody(
                 toolBodyFilterToolBody = stateFilter.value,
@@ -64,7 +136,7 @@ fun ToolBodyList() {
                         fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
                     )
                 },
-                toolBodyList = items2.value,
+                toolBodyList = items.value,
                 onClickItem = { id ->
                     println("ToolBodyApp L $id")
                     ToolDatabaseApplication.context.navController.navigate(
@@ -87,10 +159,10 @@ fun ToolBodyListBody(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        ToolBodyFilter(
-            filterToolBody = toolBodyFilterToolBody,
-            onChangeFilter = onChangeFilter
-        )
+//        ToolBodyFilter(
+//            filterToolBody = toolBodyFilterToolBody,
+//            onChangeFilter = onChangeFilter
+//        )
 
         if (toolBodyList.isNotEmpty()) {
             ToolBodyList(

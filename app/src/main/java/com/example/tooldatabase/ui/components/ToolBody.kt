@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -174,6 +175,7 @@ fun ToolBodyDetail(
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
+                        .padding(bottom = 4.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
@@ -183,7 +185,7 @@ fun ToolBodyDetail(
                         lineHeight = 18.sp,
                         color = ThemeColor.gray5,
                         modifier = Modifier
-                            .padding(bottom = 4.dp)
+                            .weight(0.7f)
                     )
 
                     Text(
@@ -192,8 +194,9 @@ fun ToolBodyDetail(
                         fontWeight = FontWeight(500),
                         lineHeight = 18.sp,
                         color = ThemeColor.gray7,
+                        textAlign = TextAlign.Right,
                         modifier = Modifier
-                            .padding(bottom = 4.dp)
+                            .weight(0.3f)
                     )
                 }
             }
@@ -207,7 +210,7 @@ fun ToolBodyList(
     onClickItem: ((id: Int) -> Unit)? = null
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
+//        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(toolBodyList) {
