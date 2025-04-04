@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.tooldatabase.screens.tool_body.detail.ToolBodyDetailScreen
-import com.example.tooldatabase.screens.tool_body.ToolBodyList
+import com.example.tooldatabase.screens.tool_body.ToolBodyScreen
 
 @Composable
 fun NavigationGraph(
@@ -20,7 +20,7 @@ fun NavigationGraph(
         composable(
             route = NavigationRoute.TOOL_BODY_LIST
         ) {
-            ToolBodyList()
+            ToolBodyScreen()
         }
 
         composable(

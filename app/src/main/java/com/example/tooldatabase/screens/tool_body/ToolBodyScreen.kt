@@ -1,7 +1,6 @@
 package com.example.tooldatabase.screens.tool_body
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,134 +36,69 @@ import com.example.tooldatabase.ui.elements.Spinner
 import com.example.tooldatabase.ui.elements.SpinnerOption
 import kotlinx.coroutines.launch
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ToolBodyList() {
+fun ToolBodyScreen() {
     val vmToolBodyList: ToolBodyListVM = viewModel(
         factory = ToolBodyListVMFactory()
     )
 
-    val items = vmToolBodyList.items.collectAsState()
+    val stateToolBodyList = vmToolBodyList.toolBodyList.collectAsState()
     val stateFilter = vmToolBodyList.stateFilter.collectAsState()
-
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
-    val scope = rememberCoroutineScope()
-    val showBottomSheet = mutableStateOf(value = false)
 
     ScreenLayout(
         title = "ToolBodyList",
     ) {
-        Column(
-            modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp)
-                .fillMaxSize()
-        ) {
-//            ButtonText(
-//                modifier = Modifier
-//                    .padding(top = 16.dp, bottom = 16.dp)
-//                    .fillMaxWidth(),
-//                text = "Debug",
-//                onClick = {
-//                    vmToolBodyList.debug()
-//                }
-//            )
+        ToolBodyScreenUi(
+            toolBodyFilterToolBody = stateFilter.value,
+            onChangeFilter = { value, field ->
+                println("ToolBodyApp F $value $field")
 
-            ButtonText(
-                modifier = Modifier
-                    .padding(top = 16.dp, bottom = 16.dp)
-                    .fillMaxWidth(),
-                text = "Фильтр",
-                onClick = {
-                    showBottomSheet.value = true
-                }
-            )
+                vmToolBodyList.updateFilter(
+                    fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
+                )
 
-            if (showBottomSheet.value) {
-                ModalBottomSheet(
-                    onDismissRequest = {
-                        showBottomSheet.value = false
-                    },
-                    shape = RoundedCornerShape(0.dp),
-                    sheetState = sheetState,
-                ) {
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight(0.96f)
-                            .padding(8.dp)
-                    ) {
-                        ToolBodyFilter(
-                            filterToolBody = stateFilter.value,
-                            onChangeFilter = { value, field ->
-                                println("ToolBodyApp F $value $field")
-
-                                vmToolBodyList.updateFilter(
-                                    fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
-                                )
-
-                                vmToolBodyList.debug()
-                            },
-                        )
-
-                        ButtonText(
-                            modifier = Modifier
-                                .padding(top = 16.dp, bottom = 16.dp)
-                                .fillMaxWidth(),
-                            text = "Показать",
-                            onClick = {
-                                vmToolBodyList.debug()
-
-                                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                                    if (!sheetState.isVisible) {
-                                        showBottomSheet.value = false
-                                    }
-                                }
-                            }
-                        )
-                    }
-                }
+                vmToolBodyList.debug()
+            },
+            toolBodyList = stateToolBodyList.value,
+            onClickItem = { id ->
+                println("ToolBodyApp L $id")
+                ToolDatabaseApplication.context.navController.navigate(
+                    route = "${NavigationRoute.TOOL_BODY_DETAIL}/$id"
+                )
             }
-
-            ToolBodyListBody(
-                toolBodyFilterToolBody = stateFilter.value,
-                onChangeFilter = { value, field ->
-                    println("ToolBodyApp F $value $field")
-
-                    vmToolBodyList.updateFilter(
-                        fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
-                    )
-                },
-                toolBodyList = items.value,
-                onClickItem = { id ->
-                    println("ToolBodyApp L $id")
-                    ToolDatabaseApplication.context.navController.navigate(
-                        route = "${NavigationRoute.TOOL_BODY_DETAIL}/$id"
-                    )
-                }
-            )
-        }
+        )
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToolBodyListBody(
-    toolBodyFilterToolBody: FilterToolBody,
+fun ToolBodyScreenUi(
+    toolBodyFilterToolBody: FilterToolBody = FilterToolBody(),
     onChangeFilter: ((value: Any?, field: FieldFilter?) -> Unit)? = null,
-    toolBodyList: List<ToolBody>,
+    toolBodyList: List<ToolBody> = listOf(),
     onClickItem: ((id: Int) -> Unit)? = null
 ) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(value = false)}
+
     Column(
         modifier = Modifier
+            .padding(start = 8.dp, end = 8.dp)
             .fillMaxSize()
     ) {
-//        ToolBodyFilter(
-//            filterToolBody = toolBodyFilterToolBody,
-//            onChangeFilter = onChangeFilter
-//        )
+        ButtonText(
+            modifier = Modifier
+                .padding(top = 16.dp, bottom = 16.dp)
+                .fillMaxWidth(),
+            text = "Фильтр",
+            onClick = {
+                println("ToolBodyApp K")
+                showBottomSheet = true
+            }
+        )
 
         if (toolBodyList.isNotEmpty()) {
             ToolBodyList(
@@ -173,6 +109,44 @@ fun ToolBodyListBody(
             Text(
                 text = "Не найдено"
             )
+        }
+
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    println("ToolBodyApp D")
+                    showBottomSheet = false
+                },
+                shape = RoundedCornerShape(0.dp),
+                sheetState = sheetState,
+            ) {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight(0.96f)
+                        .padding(8.dp)
+                ) {
+
+                    ToolBodyFilter(
+                        filterToolBody = toolBodyFilterToolBody,
+                        onChangeFilter = onChangeFilter
+                    )
+
+                    ButtonText(
+                        modifier = Modifier
+                            .padding(top = 16.dp, bottom = 16.dp)
+                            .fillMaxWidth(),
+                        text = "Показать",
+                        onClick = {
+                            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                                if (!sheetState.isVisible) {
+                                    showBottomSheet = false
+                                }
+                            }
+                        }
+                    )
+                }
+            }
         }
     }
 }
@@ -263,7 +237,7 @@ fun ToolBodyFilter(
 @Composable
 fun HomeScreenPreview() {
     ScreenLayout {
-        ToolBodyListBody(
+        ToolBodyScreenUi(
             toolBodyFilterToolBody = FilterToolBody(),
             toolBodyList = ToolBodyFakeData.toolBodyListFake
         )

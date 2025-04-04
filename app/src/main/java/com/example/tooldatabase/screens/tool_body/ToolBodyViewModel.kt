@@ -22,8 +22,8 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
     private var _stateFilterToolBody = MutableStateFlow(FilterToolBody())
     val stateFilter = _stateFilterToolBody.asStateFlow()
 
-    private val _items: MutableStateFlow<List<ToolBody>> = MutableStateFlow(listOf())
-    var items = _items.asStateFlow()
+    private val _toolBodyList: MutableStateFlow<List<ToolBody>> = MutableStateFlow(listOf())
+    var toolBodyList = _toolBodyList.asStateFlow()
 
     fun updateFilter(fieldFilter: FieldFilter) {
         _stateFilterToolBody.update {
@@ -50,7 +50,7 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     private fun updateItems(filter: FilterToolBody) {
         CoroutineScope(Dispatchers.IO).launch {
-            _items.update {
+            _toolBodyList.update {
                 repository.getToolBodyList(filter)
             }
         }
