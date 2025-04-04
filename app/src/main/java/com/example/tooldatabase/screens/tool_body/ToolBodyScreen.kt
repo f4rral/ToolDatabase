@@ -43,7 +43,7 @@ fun ToolBodyScreen() {
         factory = ToolBodyListVMFactory()
     )
 
-    val stateToolBodyList = vmToolBodyList.toolBodyList.collectAsState()
+    val stateToolBodyList = vmToolBodyList.stateList.collectAsState()
     val stateFilter = vmToolBodyList.stateFilter.collectAsState()
 
     ScreenLayout(
@@ -58,7 +58,7 @@ fun ToolBodyScreen() {
                     fieldFilter = stateFilter.value.fields[field!!.filedName.name]!!.copy(currentValue = value)
                 )
 
-                vmToolBodyList.debug()
+                vmToolBodyList.update()
             },
             toolBodyList = stateToolBodyList.value,
             onClickItem = { id ->

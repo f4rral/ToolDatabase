@@ -19,22 +19,15 @@ import kotlin.reflect.KClass
 
 
 class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
-    private var _stateFilterToolBody = MutableStateFlow(FilterToolBody())
-    val stateFilter = _stateFilterToolBody.asStateFlow()
+    private var _stateFilter = MutableStateFlow(FilterToolBody())
+    val stateFilter = _stateFilter.asStateFlow()
 
-    private val _toolBodyList: MutableStateFlow<List<ToolBody>> = MutableStateFlow(listOf())
-    var toolBodyList = _toolBodyList.asStateFlow()
-
-    fun updateFilter(fieldFilter: FieldFilter) {
-        _stateFilterToolBody.update {
-            it.fields[fieldFilter.filedName.name] = (fieldFilter).copy()
-            it.copy()
-        }
-    }
+    private val _stateList: MutableStateFlow<List<ToolBody>> = MutableStateFlow(listOf())
+    var stateList = _stateList.asStateFlow()
 
     private fun updateValues() {
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilterToolBody.update { filter ->
+            _stateFilter.update { filter ->
                 repository.updateValues(filter)
             }
         }
@@ -42,29 +35,36 @@ class ToolBodyListVM(var repository: ToolBodyRepository) : ViewModel() {
 
     private fun updateAvailableValues() {
         CoroutineScope(Dispatchers.IO).launch {
-            _stateFilterToolBody.update { filter ->
+            _stateFilter.update { filter ->
                 repository.updateAvailableValues(filter)
             }
         }
     }
 
-    private fun updateItems(filter: FilterToolBody) {
+    private fun updateList(filter: FilterToolBody) {
         CoroutineScope(Dispatchers.IO).launch {
-            _toolBodyList.update {
+            _stateList.update {
                 repository.getToolBodyList(filter)
             }
         }
     }
 
-    fun debug() {
+    fun updateFilter(fieldFilter: FieldFilter) {
+        _stateFilter.update { filter ->
+            filter.fields[fieldFilter.filedName.name] = (fieldFilter).copy()
+            filter.copy()
+        }
+    }
+
+    fun update() {
         updateAvailableValues()
-        updateItems(_stateFilterToolBody.value)
+        updateList(_stateFilter.value)
     }
 
     init {
         updateValues()
         updateAvailableValues()
-        updateItems(_stateFilterToolBody.value)
+        updateList(_stateFilter.value)
     }
 }
 
