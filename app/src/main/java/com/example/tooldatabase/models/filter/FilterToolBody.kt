@@ -22,6 +22,13 @@ data class FilterToolBody (
             availableValues = listOf(),
             currentValue = null,
             typeData = NameType.STRING
+        ),
+        NameField.KAPR.name to FieldFilter(
+            filedName = NameField.KAPR,
+            values = listOf(),
+            availableValues = listOf(),
+            currentValue = null,
+            typeData = NameType.DOUBLE
         )
     )
 )
@@ -37,7 +44,8 @@ data class FieldFilter(
 enum class NameField(val value: String) {
     NML_DIAMETER(value = "nmlDiameter"),
     ZEFP(value = "ZEFP"),
-    SERIES(value = "series")
+    SERIES(value = "series"),
+    KAPR(value = "KAPR")
 }
 
 enum class NameType {

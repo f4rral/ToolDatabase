@@ -230,6 +230,30 @@ fun ToolBodyFilter(
                 }
             }
         )
+
+        Spinner(
+            label = "Угол в плане",
+            currentValue = filterToolBody.fields[NameField.KAPR.name]!!.currentValue,
+            options = (listOf(null) + filterToolBody.fields[NameField.KAPR.name]!!.values).map {
+                if (it == null) {
+                    SpinnerOption("Любой", null)
+                } else {
+                    SpinnerOption(
+                        title = "$it",
+                        value = it,
+                        isEnabled = it in filterToolBody.fields[NameField.KAPR.name]!!.availableValues
+                    )
+                }
+            },
+            onClickItem = { value ->
+                if (onChangeFilter != null) {
+                    onChangeFilter(
+                        value,
+                        filterToolBody.fields[NameField.KAPR.name]
+                    )
+                }
+            }
+        )
     }
 }
 
