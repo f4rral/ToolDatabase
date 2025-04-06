@@ -21,13 +21,14 @@ object ThemeColor {
     val gray7 = Color(0xFF2A282F)
     val violet1 = Color(0xFFF4F0FF)
     val violet2 = Color(0xFFE9E1FF)
+    val red1 = Color(0xFFDE002B)
     val violet3 = Color(0xFF7949FF)
     val yellow1 = Color(0xFFF5BE2E)
     val green1 = Color(0xFF45A320)
 
     val buttonColors: ButtonColors = ButtonColors(
         contentColor = gray2,
-        containerColor = violet3,
+        containerColor = red1,
         disabledContentColor = gray4,
         disabledContainerColor = gray5
     )

@@ -8,6 +8,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tooldatabase.ToolDatabaseApplication
+import com.example.tooldatabase.navigation.NavigationRoute
 import com.example.tooldatabase.ui.components.tool_body.ToolBodyDetail
 import com.example.tooldatabase.ui.layouts.ScreenLayout
 
@@ -20,7 +22,12 @@ fun ToolBodyDetailScreen(toolBodyId: Int) {
     val toolBody = vmToolBodyDetail.toolBody.collectAsState()
 
     ScreenLayout(
-        title = "ToolBodyDetail",
+        title = "Об инструменте",
+        onNavBack = {
+            ToolDatabaseApplication.context.navController.navigate(
+                route = NavigationRoute.TOOL_BODY_LIST
+            )
+        }
     ) {
         Column(
             modifier = Modifier

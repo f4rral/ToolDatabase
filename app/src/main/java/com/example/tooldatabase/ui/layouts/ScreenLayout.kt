@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -19,8 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.LargeAppBarExpandedHeight
-import androidx.compose.material3.TopAppBarDefaults.MediumAppBarCollapsedHeight
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -77,7 +74,7 @@ fun ScreenLayout(
             if (onFloatingActionButton != null) {
                 FloatingActionButton(
                     shape = RoundedCornerShape(percent = 50),
-                    containerColor = ThemeColor.violet3,
+                    containerColor = ThemeColor.red1,
                     onClick = {
                         onFloatingActionButton()
                     }

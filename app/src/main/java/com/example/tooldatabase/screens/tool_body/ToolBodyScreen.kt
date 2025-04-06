@@ -47,7 +47,7 @@ fun ToolBodyScreen() {
     val stateFilter = vmToolBodyList.stateFilter.collectAsState()
 
     ScreenLayout(
-        title = "ToolBodyList",
+        title = "Фрезы со сменными пластинами",
     ) {
         ToolBodyScreenUi(
             toolBodyFilterToolBody = stateFilter.value,

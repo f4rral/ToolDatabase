@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,7 +67,7 @@ fun ToolBodyItem(
                 modifier = Modifier
                     .size(width = 48.dp, height = 48.dp)
                     .clip(shape = RoundedCornerShape(percent = 50))
-                    .background(ThemeColor.violet3)
+                    .background(ThemeColor.red1)
             )
 
             Column(
@@ -137,7 +136,7 @@ fun ToolBodyDetail(
                 .padding(bottom = 8.dp)
                 .clip(shape = RoundedCornerShape(percent = 50))
                 .size(width = 64.dp, height = 64.dp)
-                .background(ThemeColor.violet3)
+                .background(ThemeColor.red1)
         )
 
         Text(

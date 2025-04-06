@@ -17,7 +17,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = ThemeColor.violet3,
+    primary = ThemeColor.red1,
     secondary = ThemeColor.green1,
     tertiary = ThemeColor.yellow1
 
