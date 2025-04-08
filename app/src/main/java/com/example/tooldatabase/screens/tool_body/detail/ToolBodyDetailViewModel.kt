@@ -24,10 +24,10 @@ class ToolBodyDetailVM(
             id = -1,
             title = "",
             series = "",
-            KAPR = 0.0,
-            ORDCODE = "",
+            kapr = 0.0,
+            orderCode = "",
             nmlDiameter = 0.0,
-            ZEFP = 0
+            zefp = 0
         )
     )
     var toolBody = _toolBody.asStateFlow()

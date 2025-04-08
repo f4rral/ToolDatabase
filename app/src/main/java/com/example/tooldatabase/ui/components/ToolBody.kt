@@ -38,10 +38,10 @@ fun ToolBodyItem(
         id = -1,
         title = "",
         series = "",
-        KAPR = 0.0,
-        ORDCODE = "",
+        kapr = 0.0,
+        orderCode = "",
         nmlDiameter = 0.0,
-        ZEFP = 0
+        zefp = 0
     ),
     onClick: ((id: Int) -> Unit)? = null
 ) {
@@ -78,7 +78,7 @@ fun ToolBodyItem(
 
             ) {
                 Text(
-                    text = item.ORDCODE,
+                    text = item.orderCode,
                     fontSize = 16.sp,
                     fontWeight = FontWeight(600),
                     lineHeight = 18.sp,
@@ -110,14 +110,14 @@ fun ToolBodyDetail(
 ) {
     val mainParameters = mapOf(
         "Серия" to toolBody.series,
-        "Угол в плане, °" to toolBody.KAPR,
+        "Угол в плане, °" to toolBody.kapr,
         "Номинальный диаметр, мм" to toolBody.nmlDiameter,
-        "Макс. глубина резания, мм" to toolBody.APMX,
-        "Число зубъев, шт" to toolBody.ZEFP,
+        "Макс. глубина резания, мм" to toolBody.apMax,
+        "Число зубъев, шт" to toolBody.zefp,
         "Форма крепежной части" to toolBody.formFixPart,
         "Размер крепежной части" to toolBody.sizeFixPart,
         "Типоразмер пластины" to "${toolBody.MIID_0} | ${toolBody.MIID_1}",
-        "Каналы для подачи СОЖ" to toolBody.coolantHoles,
+        "Каналы для подачи СОЖ" to toolBody.isCoolantHoles,
         "Макс. скорость вращения, об/мин" to toolBody.nMax,
         "Масса, кг" to toolBody.weight,
         "Направление резания" to toolBody.directionCutting
@@ -140,7 +140,7 @@ fun ToolBodyDetail(
         )
 
         Text(
-            text = toolBody.ORDCODE,
+            text = toolBody.orderCode,
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
             color = ThemeColor.gray7,
