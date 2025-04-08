@@ -1,6 +1,7 @@
 package com.example.tooldatabase.data.db.tool_body
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -69,12 +70,27 @@ data class ToolBody(
     @ColumnInfo(name = "coolantHoles")
     var isCoolantHoles: Int? = 0,
 
+    @Embedded
+    var typeSizeInserts: TypeSizeInsert = TypeSizeInsert()
+)
+
+data class TypeSizeInsert(
     @ColumnInfo(name = "MIID_0")
-    var MIID_0: String? = null,
+    var insert1: String? = null,
 
     @ColumnInfo(name = "MIID_1")
-    var MIID_1: String? = null,
-)
+    var insert2: String? = null,
+) {
+    fun get(): List<String?> {
+        val insertsList = mutableListOf(insert1)
+
+        if (insert2 != null) {
+            insertsList.add(insert2)
+        }
+
+        return insertsList
+    }
+}
 
 class ToolBodyFakeData {
     companion object {
