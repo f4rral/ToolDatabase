@@ -116,7 +116,7 @@ fun ToolBodyDetail(
         "Число зубъев, шт" to toolBody.zefp,
         "Форма крепежной части" to toolBody.formFixPart,
         "Размер крепежной части" to toolBody.sizeFixPart,
-        "Типоразмер пластины" to toolBody.typeSizeInserts.get().joinToString(" | "),
+        "Типоразмер пластины" to toolBody.typeSizeInserts.getList().joinToString(" | "),
         "Каналы для подачи СОЖ" to toolBody.isCoolantHoles,
         "Макс. скорость вращения, об/мин" to toolBody.nMax,
         "Масса, кг" to toolBody.weight,
