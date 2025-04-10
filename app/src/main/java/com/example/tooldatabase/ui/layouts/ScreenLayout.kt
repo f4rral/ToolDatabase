@@ -41,7 +41,7 @@ fun ScreenLayout(
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
-                    containerColor = ThemeColor.gray2,
+                    containerColor = ThemeColor.gray4,
                     titleContentColor = ThemeColor.gray7,
                 ),
 
