@@ -3,6 +3,8 @@ package com.example.tooldatabase.screens.tool_body.detail
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -22,7 +24,7 @@ fun ToolBodyDetailScreen(toolBodyId: Int) {
     val toolBody = vmToolBodyDetail.toolBody.collectAsState()
 
     ScreenLayout(
-        title = "Об инструменте",
+        title = "",
         onNavBack = {
             ToolDatabaseApplication.context.navController.navigate(
                 route = NavigationRoute.TOOL_BODY_LIST
@@ -33,6 +35,7 @@ fun ToolBodyDetailScreen(toolBodyId: Int) {
             modifier = Modifier
                 .padding(start = 8.dp, end = 8.dp, top = 8.dp)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             ToolBodyDetail(toolBody = toolBody.value)
         }

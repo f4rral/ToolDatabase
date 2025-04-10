@@ -1,5 +1,6 @@
 package com.example.tooldatabase.ui.components.tool_body
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,21 +12,44 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.BrushPainter
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.ColorImage
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePreviewHandler
+import coil3.compose.LocalAsyncImagePreviewHandler
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import com.example.tooldatabase.R
 import com.example.tooldatabase.data.db.tool_body.ToolBody
 import com.example.tooldatabase.data.db.tool_body.ToolBodyFakeData
 import com.example.tooldatabase.ui.theme.ThemeColor
@@ -131,14 +155,6 @@ fun ToolBodyDetail(
             .background(ThemeColor.gray2)
             .padding(16.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .clip(shape = RoundedCornerShape(percent = 50))
-                .size(width = 64.dp, height = 64.dp)
-                .background(ThemeColor.red1)
-        )
-
         Text(
             text = toolBody.orderCode,
             fontSize = 20.sp,
@@ -154,6 +170,20 @@ fun ToolBodyDetail(
             fontWeight = FontWeight(400),
             lineHeight = 18.sp,
             color = ThemeColor.gray5,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+        )
+
+//        AsyncImage(
+//            model = "file:///android_asset/images/no_image.png",
+//            contentDescription = null,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(240.dp)
+//                .padding(bottom = 16.dp)
+//        )
+
+        ToolBodyGallery(
             modifier = Modifier
                 .padding(bottom = 16.dp)
         )
@@ -188,7 +218,7 @@ fun ToolBodyDetail(
                     )
 
                     Text(
-                        text = "$value",
+                        text = if (value != null) "$value" else "-",
                         fontSize = 16.sp,
                         fontWeight = FontWeight(500),
                         lineHeight = 18.sp,
@@ -221,6 +251,57 @@ fun ToolBodyList(
     }
 }
 
+@Composable
+fun ToolBodyGallery(
+    modifier: Modifier = Modifier
+) {
+    val componentModifier = Modifier.wrapContentWidth().then(modifier)
+
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = componentModifier
+    ) {
+        item {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .width(300.dp)
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .background(ThemeColor.gray5)
+            ) {
+
+                AsyncImage(
+                    model = "file:///android_asset/images/no_image.png",
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(240.dp)
+                )
+            }
+        }
+
+        item {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .width(300.dp)
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .background(ThemeColor.gray5)
+            ) {
+                AsyncImage(
+                    model = "file:///android_asset/images/no_image.png",
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(240.dp)
+                )
+            }
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun ToolBodyPreview() {
@@ -241,17 +322,56 @@ private fun ToolBodyItemPreview() {
 
 @Preview
 @Composable
-private fun ToolBodyDetailPreview() {
-    ToolDatabaseTheme {
-        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBody1)
+fun ToolBodyGalleryPreview() {
+    val previewHandler = AsyncImagePreviewHandler {
+        ColorImage(
+            color = Color.Gray.toArgb(),
+            width = 240,
+            height = 240
+        )
+    }
+
+    CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+        ToolDatabaseTheme {
+            ToolBodyGallery()
+        }
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
+@Preview
+@Composable
+private fun ToolBodyDetailPreview() {
+    val previewHandler = AsyncImagePreviewHandler {
+        ColorImage(
+            color = Color.Gray.toArgb(),
+            width = 240,
+            height = 240
+        )
+    }
+
+    CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+        ToolDatabaseTheme {
+            ToolBodyDetail(toolBody = ToolBodyFakeData.toolBody1)
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
 private fun ToolBodyDetailPreview2() {
-    ToolDatabaseTheme {
-        ToolBodyDetail(toolBody = ToolBodyFakeData.toolBody2)
+    val previewHandler = AsyncImagePreviewHandler {
+        ColorImage(
+            color = Color.Gray.toArgb(),
+            width = 240,
+            height = 240
+        )
+    }
+
+    CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+        ToolDatabaseTheme {
+            ToolBodyDetail(toolBody = ToolBodyFakeData.toolBody2)
+        }
     }
 }
-
